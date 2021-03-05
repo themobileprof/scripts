@@ -1,0 +1,159 @@
+#!/bin/sh
+
+# Author: Samuel Anyaele
+# Source: TheMobileProf.com
+
+echo "TheMobileProf.com recommended Setup for Termux.
+Press Y/y to continue:"
+read INSTALL
+# Only continue if user says Yes
+if [ ${INSTALL,,} != 'y' ]; then
+   exit 0
+fi
+
+
+echo "Updating Termux ..."
+sleep 2
+pkg update --yes
+
+
+# PACKAGE INSTALLATIONS #
+sleep 1
+echo "\n\nInstalling Git and Hub...
+# Git is a Version Control system for storing and distributing software, and Hub is the Github CLI"
+sleep 3
+pkg install -y git
+pkg install -y hub
+
+
+
+sleep 1
+echo "Now let's configure Git ...\n"
+sleep 1
+echo "What is your name?"
+read USERNAME
+git config --global user.name "$USERNAME"
+
+echo "What is your email? (preferably github.com email)"
+read USEREMAIL
+git config --global user.email $USEREMAIL
+
+
+
+
+sleep 1
+echo "\n\n Installing Neovim ...
+# Neovim is a robust terminal code editor that is forked from Vim"
+sleep 3
+pkg install -y neovim
+
+
+
+
+sleep 1
+echo "\n\n Installing Python 3 ...
+# Python is a robust programming and scripting language"
+sleep 3
+pkg install -y python
+
+
+
+
+
+sleep 1
+echo "\n \n Installing Nodejs & npm ...
+# NodeJs enables server-side Javascript"
+sleep 3
+pkg install -y nodejs
+
+
+
+
+
+sleep 1
+echo "\n\n Setup Neovim ..."
+sleep 3
+# Install vim-plug
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+# Ensure ~/.config/nvim has been created
+NVIMDIR="~/.config/nvim"
+if[ ! -d "$NVIMDIR" ]; then
+	mkdir -p $NVIMDIR<F11>
+fi
+
+# Ensure ~/env/init.vim exists
+NVIMFILE="~/env/init.vim"
+if[ ! -f "NVIMFILE" ]; then
+	git clone https://github.com/themobileprof/env ~/env
+fi
+
+# Copy the Neovim config file ~/env/init.vim to ~/.config/nvim
+cp $NVIMFILE $NVIMDIR
+
+# Run :PluInstall on Neovim
+echo "Installing Neovim plugins ..."
+sleep 2
+nvim --headless +PlugInstall +qall
+
+
+# Configure COC
+enable_lang (){
+	echo "Enable $1 support for Neovim? Y/n"
+	read REPLY
+	if [ "${REPLY,,}" = "y" ]; then
+		nvim +"CocInstall -sync coc-$2" +qall
+		echo "Enabled $1
+		-------"
+		sleep 1
+	fi
+}
+
+
+# Install Prettier
+echo "Installing prettier ..."
+nvim +'CocInstall -sync coc-prettier' +qall
+
+
+# Language support for CSS
+enable_lang CSS css
+
+# Language support for HTML
+enable_lang HTML html
+
+# Language support for Javascript
+enable_lang Javascript tsserver
+
+# Language support for Python
+enable_lang Python pyright
+
+# Language support for PHP
+enable_lang PHP phpls
+
+# Language support for YAML
+enable_lang YAML yaml
+
+# Language support for GIT
+enable_lang GIT git
+
+# Language support for SQL
+enable_lang SQL sql
+
+# Language support for Json
+enable_lang JSON json
+
+# Language support for Bash
+enable_lang Bash sh
+
+# Finalize config
+echo "\n\nFinalizing configuration"
+sleep 3
+nvim +CocUpdateSync +qall
+
+sleep 1
+echo "\n\nInstall Zsh"
+sleep 3
+bash -c "$(curl -fsSL https://git.io/oh-my-termux)"
+
+
