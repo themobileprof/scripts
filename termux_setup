@@ -46,6 +46,8 @@ echo "What is your email? (preferably github.com email)"
 read USEREMAIL
 git config --global user.email $USEREMAIL
 
+# Merge setup
+git config pull.rebase false
 
 
 
