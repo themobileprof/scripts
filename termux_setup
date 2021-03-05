@@ -22,8 +22,8 @@ sleep 1
 echo "Installing openssl and openssh ...
 # Enable secure remote connection from a terminal"
 sleep 3
-pkg install -y openssh
-pkg install -y openssl
+pkg install -y openssl openssh
+ssh-keygen
 
 
 sleep 1
