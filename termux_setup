@@ -14,7 +14,8 @@ fi
 
 echo "Updating Termux ..."
 sleep 2
-pkg update -q
+# Answer "Y" to all prompts
+yes Y | pkg update
 
 
 # PACKAGE INSTALLATIONS #
