@@ -14,7 +14,7 @@ fi
 
 echo "Updating Termux ..."
 sleep 2
-pkg update --yes
+pkg update -q
 
 
 # PACKAGE INSTALLATIONS #
@@ -23,8 +23,7 @@ echo "Installing openssl and openssh ...
 # Enable secure remote connection from a terminal"
 sleep 3
 pkg install -y openssl openssh
-ssh-keygen
-
+cat /dev/zero | ssh-keygen -q -N ""
 
 sleep 1
 echo "\n\nInstalling Git and Hub...
@@ -47,7 +46,7 @@ read USEREMAIL
 git config --global user.email $USEREMAIL
 
 # Merge setup
-git config pull.rebase false
+git config --global pull.rebase false
 
 
 
@@ -89,13 +88,15 @@ sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.
 
 # Ensure ~/.config/nvim has been created
 NVIMDIR="~/.config/nvim"
-if[ ! -d "$NVIMDIR" ]; then
-	mkdir -p $NVIMDIR<F11>
+if [[ ! -d "$NVIMDIR" ]] 
+then
+	mkdir -p $NVIMDIR
 fi
 
 # Ensure ~/env/init.vim exists
 NVIMFILE="~/env/init.vim"
-if[ ! -f "NVIMFILE" ]; then
+if [[ ! -f "$NVIMFILE" ]] 
+then
 	git clone https://github.com/themobileprof/env ~/env
 fi
 
