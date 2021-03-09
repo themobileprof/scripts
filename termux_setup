@@ -17,17 +17,27 @@ sleep 2
 # Answer "Y" to all prompts
 yes Y | pkg update
 
+sleep 1
+echo "
+Installing Unzip...
+# Unzip is an archiving and extraction package"
+sleep 3
+pkg install -y unzip
+
 
 # PACKAGE INSTALLATIONS #
 sleep 1
-echo "Installing openssl and openssh ...
+echo "
+Installing openssl and openssh ...
 # Enable secure remote connection from a terminal"
 sleep 3
 pkg install -y openssl openssh
 cat /dev/zero | ssh-keygen -q -N ""
 
+
 sleep 1
-echo "\n\nInstalling Git and Hub...
+echo "
+Installing Git and Gh...
 # Git is a Version Control system for storing and distributing software, and Gh is the official Github CLI"
 sleep 3
 pkg install -y git
@@ -36,7 +46,8 @@ pkg install -y gh
 
 
 sleep 1
-echo "Now let's configure Git ...\n"
+echo "
+Now let's configure Git ...\n"
 sleep 1
 echo "What is your name?"
 read USERNAME
@@ -52,7 +63,8 @@ git config --global pull.rebase false
 
 
 sleep 1
-echo "\n\n Installing Neovim ...
+echo "
+Installing Neovim ...
 # Neovim is a robust terminal code editor that is forked from Vim"
 sleep 3
 pkg install -y neovim
@@ -61,7 +73,8 @@ pkg install -y neovim
 
 
 sleep 1
-echo "\n\n Installing Python 3 ...
+echo "
+Installing Python 3 ...
 # Python is a robust programming and scripting language"
 sleep 3
 pkg install -y python
@@ -81,7 +94,8 @@ pkg install -y nodejs
 
 
 sleep 1
-echo "\n\n Setup Neovim ..."
+echo "
+Setup Neovim ..."
 sleep 3
 # Install vim-plug
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
@@ -105,7 +119,8 @@ fi
 cp $NVIMFILE $NVIMDIR
 
 # Run :PluInstall on Neovim
-echo "Installing Neovim plugins ..."
+echo "
+Installing Neovim plugins ..."
 sleep 2
 nvim --headless +PlugInstall +qall
 
@@ -124,7 +139,8 @@ enable_lang (){
 
 
 # Install Prettier
-echo "Installing prettier ..."
+echo "
+Installing prettier ..."
 nvim +'CocInstall -sync coc-prettier' +qall
 
 
@@ -159,12 +175,14 @@ enable_lang JSON json
 enable_lang Bash sh
 
 # Finalize config
-echo "\n\nFinalizing configuration"
+echo "
+Finalizing Neovim configuration"
 sleep 3
 nvim +CocUpdateSync +qall
 
 sleep 1
-echo "\n\nInstall Zsh"
+echo "
+Install Zsh"
 sleep 3
 bash -c "$(curl -fsSL https://git.io/oh-my-termux)"
 
