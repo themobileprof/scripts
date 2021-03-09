@@ -1,10 +1,10 @@
-#Termux Automation Scripts
+# Termux Automation Scripts
 
 This is a collection of scripts that make 
 it easy to setup Termux on Android for 
 beginner programmers.
 
-##Initial Setup file
+## Initial Setup file
 The very first file to run after downloading 
 termux is termux_setup
 Here is the initialization syntax:
