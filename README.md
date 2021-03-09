@@ -9,7 +9,7 @@ The very first file to run after downloading
 termux is termux_setup
 Here is the initialization syntax:
 ```
-curl -Lo setup https://raw.githubusercontent.com/themobileprof/scripts/master/termux_setup && chmod +x setup && ./setup
+curl -Lo setup https://raw.githubusercontent.com/themobileprof/scripts/master/termux_setup && chmod +x setup && ./setup && exit
 ```
 This will Script do the following:
 1. Update Termux
