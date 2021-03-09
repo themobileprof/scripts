@@ -47,7 +47,7 @@ pkg install -y gh
 
 sleep 1
 echo "
-Now let's configure Git ...\n"
+Now let's configure Git ..."
 sleep 1
 echo "What is your name?"
 read USERNAME
@@ -98,18 +98,18 @@ echo "
 Setup Neovim ..."
 sleep 3
 # Install vim-plug
-sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 # Ensure ~/.config/nvim has been created
-NVIMDIR="~/.config/nvim"
+NVIMDIR=~/.config/nvim
 if [[ ! -d "$NVIMDIR" ]] 
 then
 	mkdir -p $NVIMDIR
 fi
 
 # Ensure ~/env/init.vim exists
-NVIMFILE="~/env/init.vim"
+NVIMFILE=~/env/init.vim
 if [[ ! -f "$NVIMFILE" ]] 
 then
 	git clone https://github.com/themobileprof/env ~/env
@@ -118,7 +118,9 @@ fi
 # Copy the Neovim config file ~/env/init.vim to ~/.config/nvim
 cp $NVIMFILE $NVIMDIR
 
-# Run :PluInstall on Neovim
+
+
+# Run :PlugInstall on Neovim
 echo "
 Installing Neovim plugins ..."
 sleep 2
