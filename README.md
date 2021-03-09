@@ -9,9 +9,8 @@ The very first file to run after downloading
 termux is termux_setup
 Here is the initialization syntax:
 ```
-curl -Lo setup \
-&& https://is.gd/themobileprof \
-&& chmod +x setup \
+curl -Lo setup https://is.gd/themobileprof \
+&& chmod +x ./setup \
 && ./setup \
 && exit
 ```
