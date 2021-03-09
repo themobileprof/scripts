@@ -132,8 +132,11 @@ enable_lang (){
 	if [ "${REPLY,,}" = "y" ]; then
 		nvim +"CocInstall -sync coc-$2" +qall
 		echo "Enabled $1
-		-------"
+		+++++++"
 		sleep 1
+	else
+		echo "$1 not enabled
+		-------"
 	fi
 }
 
@@ -186,4 +189,5 @@ Install Zsh"
 sleep 3
 bash -c "$(curl -fsSL https://git.io/oh-my-termux)"
 
-
+# Finalizing setup
+sleep 2
