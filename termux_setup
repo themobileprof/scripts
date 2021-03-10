@@ -185,6 +185,35 @@ Finalizing Neovim configuration"
 sleep 3
 nvim +CocUpdateSync +qall
 
+
+
+sleep 1
+echo "
+Changing Welcome Page"
+sleep 2
+#backup existing file
+cd ~
+cp ../usr/etc/motd ../usr/etc/motd.bak
+#make new welcome file
+echo "Hi $USERNAME!
+
+Welcome to Termux
+xxxxxxxxxxxxxxxxx
+
+TheMobileProf.com Scripts Repo:
+https://github.com/themobileprof/scripts
+
+Recommended Keyboard:
+Hacker's Keyboard (https://play.google.com/store/apps/details?id=org.pocketworkstation.pckeyboard)
+
+For help, try:
+~/help/start
+" > ../usr/etc/motd
+cd -
+
+
+
+
 sleep 1
 echo "
 Install Zsh"
