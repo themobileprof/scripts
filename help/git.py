@@ -3,6 +3,7 @@
 # scripts/help/git.py
 
 import os
+import time
 from modules import git
 
 class MainMenu:
@@ -15,6 +16,8 @@ class MainMenu:
         5. Get the latest version of this project""")
 
         step = input("Choose a number from the menu above: ")
+        time.sleep(1)
+        
         return step
 
 
