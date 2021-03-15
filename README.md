@@ -4,6 +4,12 @@ This is a collection of scripts that make
 it easy to setup Termux on Android for 
 beginner programmers.
 
+## Requirements
+1. Install Termux (Linux Terminal emulator) from **Google Play Store** 
+(https://play.google.com/store/apps/details?id=com.termux).
+However, if you want the latest release, download
+from F-Droid (https://f-droid.org/packages/com.termux)
+
 ## Initial Setup file
 The very first file to run after downloading 
 termux is termux_setup
