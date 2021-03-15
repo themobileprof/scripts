@@ -5,14 +5,14 @@ it easy to setup Termux on Android for
 beginner programmers.
 
 ## Requirements
-1. Install Termux (Linux Terminal emulator) from **Google Play Store** 
+1. Install Termux (Linux Terminal emulator) from **Google Play Store**   
 (https://play.google.com/store/apps/details?id=com.termux).
 However, if you want the latest release, download
 from **F-Droid** (https://f-droid.org/packages/com.termux)
 
 ## Initial Setup file
-The very first file to run after downloading 
-termux is termux_setup
+The very first file to run after downloading   
+termux is termux_setup.
 Here is the initialization syntax:
 ```
 curl -Lo setup https://is.gd/themobileprof \
@@ -24,11 +24,11 @@ curl -Lo setup https://is.gd/themobileprof \
 ```
 curl -Lo setup https://raw.githubusercontent.com/themobileprof/scripts/master/termux_setup && chmod +x setup && ./setup && exit
 ```
-This will Script do the following:
+This Script will do the following:
 1. Update Termux
 1. Install Openssh
 1. Install and Setup Openssl
-1. Install unzip
+1. Install Unzip
 1. Install and Configure Git
 1. Install Gh (Github CLI)
 1. Install Python & pip
@@ -38,4 +38,5 @@ This will Script do the following:
     1. Using vim-plug, install Neovim plugins
 1. Install Zsh
 
-After this, restart Termux.
+After this, exit (if the script doesn't do that automatically)    
+and reopen Termux.
