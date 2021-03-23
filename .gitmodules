@@ -1,0 +1,3 @@
+[submodule "mobileops"]
+	path = mobileops
+	url = https://github.com/themobileprof/mobileops
