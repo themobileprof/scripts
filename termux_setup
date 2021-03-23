@@ -2,6 +2,12 @@
 
 # Author: Samuel Anyaele
 # Source: TheMobileProf.com
+#
+# The installation Bash file for 
+# TheMobileProf MobileOps project 
+# https://github/themobileprof/mobileops
+#
+# MobileOps simplifies development on mobile for Beginners
 
 echo "TheMobileProf.com recommended Setup for Termux.
 Press Y/y to continue:"
@@ -12,11 +18,18 @@ if [ ${INSTALL,,} != 'y' ]; then
 fi
 
 
+########################
+# UPDATE TERMUX PACKAGES
 echo "Updating Termux ..."
 sleep 2
 # Answer "Y" to all prompts
 yes Y | pkg update
 
+
+
+
+########################
+# INSTALL UNZIP
 sleep 1
 echo "
 Installing Unzip...
@@ -25,7 +38,10 @@ sleep 3
 pkg install -y unzip
 
 
-# PACKAGE INSTALLATIONS #
+
+
+########################
+# INSTALL OPENSSL & OPENSSH
 sleep 1
 echo "
 Installing openssl and openssh ...
@@ -35,6 +51,10 @@ pkg install -y openssl openssh
 cat /dev/zero | ssh-keygen -q -N ""
 
 
+
+
+########################
+# INSTALL VERSION CONTROL
 sleep 1
 echo "
 Installing Git and Gh...
@@ -62,16 +82,10 @@ git config --global pull.rebase false
 
 
 
-sleep 1
-echo "
-Installing Neovim ...
-# Neovim is a robust terminal code editor that is forked from Vim"
-sleep 3
-pkg install -y neovim
 
-
-
-
+########################
+# INSTALL SCRIPTING LANGUAGES
+# Python
 sleep 1
 echo "
 Installing Python 3 ...
@@ -79,10 +93,14 @@ Installing Python 3 ...
 sleep 3
 pkg install -y python
 
+# PHP
+sleep 1
+echo "\n \n Installing PHP ...
+# PHP powers 80% of the Web"
+sleep 3
+pkg install -y php
 
-
-
-
+# Javascript on Node
 sleep 1
 echo "\n \n Installing Nodejs & npm ...
 # NodeJs enables server-side Javascript"
@@ -92,7 +110,17 @@ pkg install -y nodejs
 
 
 
+########################
+# TERMINAL CODE EDITOR
+# Neovim install
+sleep 1
+echo "
+Installing Neovim ...
+# Neovim is a robust terminal code editor that is forked from Vim"
+sleep 3
+pkg install -y neovim
 
+# Neovim Setup
 sleep 1
 echo "
 Setup Neovim ..."
@@ -118,14 +146,11 @@ fi
 # Copy the Neovim config file ~/env/init.vim to ~/.config/nvim
 cp $NVIMFILE $NVIMDIR
 
-
-
 # Run :PlugInstall on Neovim
 echo "
 Installing Neovim plugins ..."
 sleep 2
 nvim --headless +PlugInstall +qall
-
 
 # Configure COC
 enable_lang (){
@@ -141,7 +166,6 @@ enable_lang (){
 		-------"
 	fi
 }
-
 
 # Install Prettier
 echo "
@@ -187,6 +211,22 @@ nvim +CocUpdateSync +qall
 
 
 
+
+########################
+# CLONE MOBILEOPS REPO
+sleep 1
+echo "
+Cloning TheMobileProf MobileOps tools"
+sleep 2
+cd ~
+git clone https://github.com/themobileprof/mobileops
+cd -
+
+
+
+
+########################
+# CHANGE WELCOME PAGE
 sleep 1
 echo "
 Changing Welcome Page"
@@ -207,13 +247,16 @@ Recommended Keyboard:
 Hacker's Keyboard (https://play.google.com/store/apps/details?id=org.pocketworkstation.pckeyboard)
 
 For help, try:
-~/help/start
+~/mobileops/start
+
 " > ../usr/etc/motd
 cd -
 
 
 
 
+########################
+# INSTALL ZSH
 sleep 1
 echo "
 Install Zsh"
