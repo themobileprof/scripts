@@ -9,6 +9,15 @@
 #
 # MobileOps simplifies development on mobile for Beginners
 
+# Installation function
+installations(){
+	sleep 3
+	echo "Installing $1..."
+	sleep 1
+	pkg install -y $1
+}
+
+
 echo "TheMobileProf.com recommended Setup for Termux.
 Press Y/y to continue:"
 read INSTALL
@@ -30,24 +39,17 @@ yes Y | pkg update
 
 ########################
 # INSTALL UNZIP
-sleep 1
-echo "
-Installing Unzip...
-# Unzip is an archiving and extraction package"
-sleep 3
-pkg install -y unzip
+echo "# Unzip is an archiving and extraction package"
+installations unzip
 
 
 
 
 ########################
 # INSTALL OPENSSL & OPENSSH
-sleep 1
-echo "
-Installing openssl and openssh ...
-# Enable secure remote connection from a terminal"
-sleep 3
-pkg install -y openssl openssh
+echo "# Enable secure remote connection from a terminal"
+installations openssh
+installations openssl
 cat /dev/zero | ssh-keygen -q -N ""
 
 
@@ -55,13 +57,10 @@ cat /dev/zero | ssh-keygen -q -N ""
 
 ########################
 # INSTALL VERSION CONTROL
-sleep 1
 echo "
-Installing Git and Gh...
 # Git is a Version Control system for storing and distributing software, and Gh is the official Github CLI"
-sleep 3
-pkg install -y git
-pkg install -y gh
+installations git
+installations gh
 
 
 
@@ -86,26 +85,29 @@ git config --global pull.rebase false
 ########################
 # INSTALL SCRIPTING LANGUAGES
 # Python
-sleep 1
 echo "
-Installing Python 3 ...
-# Python is a robust programming and scripting language"
-sleep 3
-pkg install -y python
+	# Python is a robust programming and scripting language"
+installations python
 
 # PHP
-sleep 1
-echo "\n \n Installing PHP ...
-# PHP powers 80% of the Web"
-sleep 3
-pkg install -y php
+echo "
+	# PHP powers 80% of the Web"
+installations php
 
 # Javascript on Node
-sleep 1
-echo "\n \n Installing Nodejs & npm ...
-# NodeJs enables server-side Javascript"
-sleep 3
-pkg install -y nodejs
+echo "
+	# NodeJs enables server-side Javascript"
+installations nodejs
+
+
+
+
+########################
+# DATABASE
+# SQLite
+echo "
+	# SQLite is a lightweight SQL database"
+installations sqlite
 
 
 
@@ -113,12 +115,9 @@ pkg install -y nodejs
 ########################
 # TERMINAL CODE EDITOR
 # Neovim install
-sleep 1
 echo "
-Installing Neovim ...
-# Neovim is a robust terminal code editor that is forked from Vim"
-sleep 3
-pkg install -y neovim
+	# Neovim is a robust terminal code editor that is forked from Vim"
+installations neovim
 
 # Neovim Setup
 sleep 1
@@ -152,7 +151,7 @@ Installing Neovim plugins ..."
 sleep 2
 nvim --headless +PlugInstall +qall
 
-# Configure COC
+# Function: Configure COC
 enable_lang (){
 	echo "Enable $1 support for Neovim? Y/n"
 	read REPLY
@@ -219,7 +218,7 @@ echo "
 Cloning TheMobileProf MobileOps tools"
 sleep 2
 cd ~
-git clone https://github.com/themobileprof/mobileops
+git clone https://github.com/themobileprof/mobileops mobileops
 cd -
 
 
