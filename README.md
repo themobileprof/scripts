@@ -24,7 +24,7 @@ curl -Lo setup https://is.gd/themobileprof \
 ```
 *OR*
 ```
-curl -Lo setup https://raw.githubusercontent.com/themobileprof/scripts/master/termux_setup && chmod +x setup && ./setup && exit
+curl -Lo setup https://raw.githubusercontent.com/themobileprof/scripts/master/termux_setup | bash && exit
 ```
 This Script will do the following:
 1. Update Termux
