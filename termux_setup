@@ -128,9 +128,14 @@ nvim --headless +PlugInstall +qall
 
 
 # Configure COC
-enable_lang (){
-	echo "Enable $1 support for Neovim? Y/n"
-	read REPLY
+enable_lang (){ 
+	if [ "${3,,}" = "y" ]; then
+        	$REPLY = "Y"
+	else
+		echo "Enable $1 support for Neovim? Y/n"
+		read REPLY
+	fi
+
 	if [ "${REPLY,,}" = "y" ]; then
 		nvim +"CocInstall -sync coc-$2" +qall
 		echo "Enabled $1
@@ -148,36 +153,39 @@ echo "
 Installing prettier ..."
 nvim +'CocInstall -sync coc-prettier' +qall
 
+# Ascertain if user would like to autoinstall Neovim plugins
+echo "Would you like to auto install language support in Neovim? Y/n"
+read ALLYES
 
 # Language support for CSS
-enable_lang CSS css
+enable_lang CSS css ALLYES
 
 # Language support for HTML
-enable_lang HTML html
+enable_lang HTML html ALLYES
 
 # Language support for Javascript
-enable_lang Javascript tsserver
+enable_lang Javascript tsserver ALLYES
 
 # Language support for Python
-enable_lang Python pyright
+enable_lang Python pyright ALLYES
 
 # Language support for PHP
-enable_lang PHP phpls
+enable_lang PHP phpls ALLYES
 
 # Language support for YAML
-enable_lang YAML yaml
+enable_lang YAML yaml ALLYES
 
 # Language support for GIT
-enable_lang GIT git
+enable_lang GIT git ALLYES
 
 # Language support for SQL
-enable_lang SQL sql
+enable_lang SQL sql ALLYES
 
 # Language support for Json
-enable_lang JSON json
+enable_lang JSON json ALLYES
 
 # Language support for Bash
-enable_lang Bash sh
+enable_lang Bash sh ALLYES
 
 # Finalize config
 echo "
