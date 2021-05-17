@@ -195,7 +195,8 @@ sleep 2
 cd ~
 cp ../usr/etc/motd ../usr/etc/motd.bak
 #make new welcome file
-echo "Hi $USERNAME!
+echo "xxxxxxxxxxxxxxxxx
+Hi $USERNAME!
 
 Welcome to Termux
 xxxxxxxxxxxxxxxxx
@@ -209,9 +210,9 @@ Hacker's Keyboard (https://play.google.com/store/apps/details?id=org.pocketworks
 For help, try:
 ~/help/start
 " > ../usr/etc/motd
-cd -
+cd ~
 
-
+termux-setup-storage
 
 
 sleep 1
