@@ -154,7 +154,7 @@ Installing prettier ..."
 nvim +'CocInstall -sync coc-prettier' +qall
 
 # Ascertain if user would like to autoinstall Neovim plugins
-echo "Would you like to auto install language support in Neovim? Y/n"
+echo "Auto install all languages support in Neovim? Y/n"
 read ALLYES
 
 # Language support for CSS
@@ -220,6 +220,7 @@ For help, try:
 " > ../usr/etc/motd
 cd ~
 
+# Setup Storage symlink on Termux home
 termux-setup-storage
 
 
