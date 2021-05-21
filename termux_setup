@@ -228,6 +228,7 @@ sleep 1
 echo "
 Install Zsh"
 sleep 3
+
 bash -c "$(curl -fsSL https://git.io/oh-my-termux)"
 
 # Finalizing setup
