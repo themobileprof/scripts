@@ -11,6 +11,11 @@ if [ ${INSTALL,,} != 'y' ]; then
    exit 0
 fi
 
+# Update Package mirror
+echo "deb https://grimler.se/termux-packages-24 stable main" > $PREFIX/etc/apt/sources.list
+echo "deb https://grimler.se/game-packages-24 games stable" > $PREFIX/etc/apt/sources.list.d/game.list
+echo "deb https://grimler.se/science-packages-24 science stable" > $PREFIX/etc/apt/sources.list.d/science.list
+
 
 echo "Updating Termux ..."
 sleep 2
