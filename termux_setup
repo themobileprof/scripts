@@ -23,16 +23,14 @@ main(){
 	yes Y | pkg update
 
 
-	echo "
-	>>> Installing Unzip...
-	# Unzip is an archiving and extraction package"
+	echo ">>> Installing Unzip..."
+	echo "# Unzip is an archiving and extraction package"
 	install unzip
 
 
 	# PACKAGE INSTALLATIONS #
-	echo "
-	>>> Installing openssl and openssh ...
-	# Enable secure remote connection from a terminal"
+	echo ">>> Installing openssl and openssh ..."
+	echo "# Enable secure remote connection from a terminal"
 	install openssl
 	install openssh
 
@@ -40,9 +38,8 @@ main(){
 	cat /dev/zero | ssh-keygen -q -N ""
 
 
-	echo "
-	>>> Installing Git and Gh...
-	# Git is a Version Control system for storing and distributing software, and Gh is the official Github CLI"
+	echo ">>> Installing Git and Gh..."
+	echo "# Git is a Version Control system for storing and distributing software, and Gh is the official Github CLI"
 	install git
 	install gh
 
@@ -50,20 +47,18 @@ main(){
 	configure_git
 
 
-	echo "\n \n >>> Installing Nodejs & npm ...
-	# NodeJs enables server-side Javascript"
+	echo ">>> Installing Nodejs & npm ..."
+	echo "# NodeJs enables server-side Javascript"
 	install nodejs
 
 
-	echo "
-	>>> Installing Python 3 ...
-	# Python is a robust programming and scripting language"
+	echo ">>> Installing Python 3 ..."
+	echo "# Python is a robust programming and scripting language"
 	install python
 
 
-	echo "
-	>>> Installing Neovim ...
-	# Neovim is a robust terminal code editor that is forked from Vim"
+	echo ">>> Installing Neovim ..."
+	echo "# Neovim is a robust terminal code editor that is forked from Vim"
 	install neovim
 
 	# Configure Neovim
@@ -78,15 +73,13 @@ main(){
 
 
 	# Setup Storage symlink on Termux home
-	echo "
-	>>> Please accept the Popup asking for permission 
-	# this configures storage link for your file manager"
+	echo ">>> Please accept the Popup asking for permission"
+	echo "# this configures storage link for your file manager"
 	sleep $WAITLONG
 	termux-setup-storage
 
 
-	echo "
-	Install Zsh"
+	echo "Install Zsh"
 	sleep $WAITLONG
 
 	bash -c "$(curl -fsSL https://git.io/oh-my-termux)"
@@ -115,8 +108,7 @@ install()
 
 # Configure git
 configure_git(){
-	echo "
-	>>> Now let's configure Git ..."
+	echo ">>> Now let's configure Git ..."
 	sleep $WAITSMALL
 	echo "What is your name?"
 	read USERNAME
@@ -135,8 +127,7 @@ configure_git(){
 # Configure Neovim
 configure_neovim()
 {
-	echo "
-	>>> Setup Neovim ..."
+	echo ">>> Setup Neovim ..."
 	sleep $WAITSMALL
 	# Install vim-plug
 	curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
@@ -189,16 +180,14 @@ neovim_lang_support ()
 neovim_plugins()
 {
 	# Run :PlugInstall on Neovim to install plugins in the config directory
-	echo "
-	>>> Installing Neovim plugins ..."
+	echo ">>> Installing Neovim plugins ..."
 	sleep $WAITSMALL
 	nvim --headless +PlugInstall +qall
 
 
 
 	# Install Prettier
-	echo "
-	Installing prettier ..."
+	echo "Installing prettier ..."
 	nvim +'CocInstall -sync coc-prettier' +qall
 
 	
@@ -225,26 +214,25 @@ neovim_plugins()
 welcome_script()
 {
 	sleep $WAITSMALL
-	echo "
-	Changing Welcome Page"
+	echo "Changing Welcome Page"
 	sleep $WAITSMALL
 	#backup existing file
 	cd ~
 	cp ../usr/etc/motd ../usr/etc/motd.bak
-	#make new welcome file
-	echo "xxxxxxxxxxxxxxxxx
-	Hi $USERNAME!
+#make new welcome file
+echo "xxxxxxxxxxxxxxxxx
+Hi $USERNAME!
 
-	Welcome to Termux
-	xxxxxxxxxxxxxxxxx
+Welcome to Termux
+xxxxxxxxxxxxxxxxx
 
-	TheMobileProf.com Scripts Repo:
-	https://github.com/themobileprof/scripts
+TheMobileProf.com Scripts Repo:
+https://github.com/themobileprof/scripts
 
-	Recommended Keyboard:
-	Hacker's Keyboard (https://play.google.com/store/apps/details?id=org.pocketworkstation.pckeyboard)
+Recommended Keyboard:
+Hacker's Keyboard (https://play.google.com/store/apps/details?id=org.pocketworkstation.pckeyboard)
 
-	" > ../usr/etc/motd
+" > ../usr/etc/motd
 	cd -
 }
 
@@ -252,11 +240,11 @@ welcome_script()
 
 
 
-########################################################
-############## Main program starts below ###############
-########################################################
-echo ">>> TheMobileProf.com recommended Setup for Termux.
-Press Y/y to continue:"
+#########################################
+####### Main program starts below #######
+#########################################
+echo ">>> TheMobileProf.com recommended Setup for Termux"
+echo "Press Y/y to continue:"
 read INSTALL
 # Only continue if user says Yes
 if [ ${INSTALL,,} != 'y' ]
