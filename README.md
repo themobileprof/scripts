@@ -39,6 +39,7 @@ This Script will do the following:
     1. Download Neovim config file from (Github.com/themobileprof/env)
     1. Using vim-plug, install Neovim plugins
 1. Install Zsh
+1. Install Google cloud cli
 
 After this, exit (if the script doesn't do that automatically)
 and reopen Termux.
