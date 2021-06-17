@@ -3,204 +3,268 @@
 # Author: Samuel Anyaele
 # Source: TheMobileProf.com
 
-echo "TheMobileProf.com recommended Setup for Termux.
-Press Y/y to continue:"
-read INSTALL
-# Only continue if user says Yes
-if [ ${INSTALL,,} != 'y' ]; then
-   exit 0
-fi
-
-# Update Package mirror
-echo "deb https://grimler.se/termux-packages-24 stable main" > $PREFIX/etc/apt/sources.list
-echo "deb https://grimler.se/game-packages-24 games stable" > $PREFIX/etc/apt/sources.list.d/game.list
-echo "deb https://grimler.se/science-packages-24 science stable" > $PREFIX/etc/apt/sources.list.d/science.list
 
 
-echo "Updating Termux ..."
-sleep 2
-# Answer "Y" to all prompts
-yes Y | pkg update
-
-sleep 1
-echo "
-Installing Unzip...
-# Unzip is an archiving and extraction package"
-sleep 3
-pkg install -y unzip
-
-
-# PACKAGE INSTALLATIONS #
-sleep 1
-echo "
-Installing openssl and openssh ...
-# Enable secure remote connection from a terminal"
-sleep 3
-pkg install -y openssl openssh
-cat /dev/zero | ssh-keygen -q -N ""
-
-
-sleep 1
-echo "
-Installing Git and Gh...
-# Git is a Version Control system for storing and distributing software, and Gh is the official Github CLI"
-sleep 3
-pkg install -y git
-pkg install -y gh
+# Constants ########
+readonly WAITLONG=3
+readonly WAITSMALL=1
+####################
 
 
 
-sleep 1
-echo "
-Now let's configure Git ..."
-sleep 1
-echo "What is your name?"
-read USERNAME
-git config --global user.name "$USERNAME"
-
-echo "What is your email? (preferably github.com email)"
-read USEREMAIL
-git config --global user.email $USEREMAIL
-
-# Merge setup
-git config --global pull.rebase false
+# main function
+main(){
+	# Update Package Termux source mirror
+	update_mirror
 
 
-
-sleep 1
-echo "
-Installing Neovim ...
-# Neovim is a robust terminal code editor that is forked from Vim"
-sleep 3
-pkg install -y neovim
+	echo ">>> Updating Termux ..."
+	# Answer "Y" to all prompts
+	yes Y | pkg update
 
 
+	echo ">>> Installing Unzip..."
+	echo "# Unzip is an archiving and extraction package"
+	install unzip
 
 
-sleep 1
-echo "
-Installing Python 3 ...
-# Python is a robust programming and scripting language"
-sleep 3
-pkg install -y python
+	# PACKAGE INSTALLATIONS #
+	echo ">>> Installing openssl and openssh ..."
+	echo "# Enable secure remote connection from a terminal"
+	install openssl
+	install openssh
+
+	# Configure SSH Key
+	cat /dev/zero | ssh-keygen -q -N ""
+
+
+	echo ">>> Installing Git and Gh..."
+	echo "# Git is a Version Control system for storing and distributing software, and Gh is the official Github CLI"
+	install git
+	install gh
+
+	# Configure git
+	configure_git
+
+
+	echo ">>> Installing Nodejs & npm ..."
+	echo "# NodeJs enables server-side Javascript"
+	install nodejs
+
+
+	echo ">>> Installing Python 3 ..."
+	echo "# Python is a robust programming and scripting language"
+	install python
+
+
+	echo ">>> Installing Neovim ..."
+	echo "# Neovim is a robust terminal code editor that is forked from Vim"
+	install neovim
+
+	# Configure Neovim
+	configure_neovim
+
+	# Install Neovim Plugins
+	neovim_plugins
+
+
+	# Configure welcome script
+	welcome_script
+
+
+	# Setup Storage symlink on Termux home
+	echo ">>> Please accept the Popup asking for permission"
+	echo "# this configures storage link for your file manager"
+	sleep $WAITLONG
+	termux-setup-storage
+
+
+	echo ">>> Install Zsh"
+	sleep $WAITLONG
+
+	bash -c "$(curl -fsSL https://git.io/oh-my-termux)"
+	
+	
+	echo ">>> Installing Google Cloud CLI ..."
+	install_gcloud_cli
+	
+	
+	# Clean up
+	clean_up
+}
 
 
 
-
-
-sleep 1
-echo "\n \n Installing Nodejs & npm ...
-# NodeJs enables server-side Javascript"
-sleep 3
-pkg install -y nodejs
-
-
-
-
-
-sleep 1
-echo "
-Setup Neovim ..."
-sleep 3
-# Install vim-plug
-curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-# Ensure ~/.config/nvim has been created
-NVIMDIR=~/.config/nvim
-if [[ ! -d "$NVIMDIR" ]] 
-then
-	mkdir -p $NVIMDIR
-fi
-
-# Ensure ~/env/init.vim exists
-NVIMFILE=~/env/init.vim
-if [[ ! -f "$NVIMFILE" ]] 
-then
-	git clone https://github.com/themobileprof/env ~/env
-fi
-
-# Copy the Neovim config file ~/env/init.vim to ~/.config/nvim
-cp $NVIMFILE $NVIMDIR
+#Update Mirror
+update_mirror()
+{
+	echo "deb https://grimler.se/termux-packages-24 stable main" > $PREFIX/etc/apt/sources.list
+	echo "deb https://grimler.se/game-packages-24 games stable" > $PREFIX/etc/apt/sources.list.d/game.list
+	echo "deb https://grimler.se/science-packages-24 science stable" > $PREFIX/etc/apt/sources.list.d/science.list
+}
 
 
 
-# Run :PlugInstall on Neovim
-echo "
-Installing Neovim plugins ..."
-sleep 2
-nvim --headless +PlugInstall +qall
+# The installation function
+install()
+{
+	sleep $WAITLONG
+	pkg install -y $1
+}
 
 
-# Configure COC
-enable_lang (){
-	echo "Enable $1 support for Neovim? Y/n"
-	read REPLY
+
+# Configure git
+configure_git(){
+	echo ">>> Now let's configure Git ..."
+	sleep $WAITSMALL
+	echo "What is your name?"
+	read USERNAME
+	git config --global user.name "$USERNAME"
+
+	echo "What is your email? (preferably github.com email)"
+	read USEREMAIL
+	git config --global user.email $USEREMAIL
+
+	# Merge setup
+	git config --global pull.rebase false
+}
+
+
+
+# Configure Neovim
+configure_neovim()
+{
+	echo ">>> Setup Neovim ..."
+	sleep $WAITSMALL
+	# Install vim-plug
+	curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+	       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+	# Ensure ~/.config/nvim has been created
+	NVIMDIR=~/.config/nvim
+	if [[ ! -d "$NVIMDIR" ]] 
+	then
+		mkdir -p $NVIMDIR
+	fi
+
+	# Ensure ~/env/init.vim exists
+	NVIMFILE=~/env/init.vim
+	if [[ ! -f "$NVIMFILE" ]] 
+	then
+		git clone https://github.com/themobileprof/env ~/env
+	fi
+
+	# Copy the Neovim config file ~/env/init.vim to ~/.config/nvim
+	cp $NVIMFILE $NVIMDIR
+
+}
+
+
+
+# Configure COC on NVIM and enable language support
+neovim_lang_support ()
+{ 
+	if [ "${2,,}" = "y" ]; then
+        	REPLY="Y"
+	else
+		echo "Enable $1 support for Neovim? Y/n"
+		read REPLY
+	fi
+
 	if [ "${REPLY,,}" = "y" ]; then
-		nvim +"CocInstall -sync coc-$2" +qall
+		nvim +"CocInstall -sync coc-${1^^}" +qall
 		echo "Enabled $1
 		+++++++"
-		sleep 1
+		sleep $WAITSMALL
 	else
-		echo "$1 not enabled
+		echo "${1^^} not enabled
 		-------"
 	fi
 }
 
 
-# Install Prettier
-echo "
-Installing prettier ..."
-nvim +'CocInstall -sync coc-prettier' +qall
 
-
-# Language support for CSS
-enable_lang CSS css
-
-# Language support for HTML
-enable_lang HTML html
-
-# Language support for Javascript
-enable_lang Javascript tsserver
-
-# Language support for Python
-enable_lang Python pyright
-
-# Language support for PHP
-enable_lang PHP phpls
-
-# Language support for YAML
-enable_lang YAML yaml
-
-# Language support for GIT
-enable_lang GIT git
-
-# Language support for SQL
-enable_lang SQL sql
-
-# Language support for Json
-enable_lang JSON json
-
-# Language support for Bash
-enable_lang Bash sh
-
-# Finalize config
-echo "
-Finalizing Neovim configuration"
-sleep 3
-nvim +CocUpdateSync +qall
+neovim_plugins()
+{
+	# Run :PlugInstall on Neovim to install plugins in the config directory
+	echo ">>> Installing Neovim plugins ..."
+	sleep $WAITSMALL
+	nvim --headless +PlugInstall +qall
 
 
 
-sleep 1
-echo "
-Changing Welcome Page"
-sleep 2
-#backup existing file
-cd ~
-cp ../usr/etc/motd ../usr/etc/motd.bak
+	# Install Prettier
+	echo "Installing prettier ..."
+	nvim +'CocInstall -sync coc-prettier' +qall
+
+	
+	# Install languages support for Neovim
+	languages=(css html tsserver pyright phpls yaml git sql json bash)
+	
+	# Ascertain if user would like to autoinstall Neovim language support plugins
+	echo "Auto install all languages support in Neovim? Y/n"
+	read ALLYES
+	
+	for lang in "${languages[@]}"; do neovim_lang_support $lang $ALLYES; done
+	
+	
+	# Finalize config
+	echo "
+	Finalizing Neovim plugin configurations"
+	sleep $WAITLONG
+	nvim +CocUpdateSync +qall
+}
+
+
+# Get Device 32bit/64bit
+device_64_bit(){
+	cpu=`uname -m`
+	if [[ $cpu == *"64"* ]]
+	then
+		return 0
+	elif [[ $cpu == *"armv7"* ]]
+	then
+		return 1
+	else
+		return 0
+	fi
+}
+
+
+
+# Download and Install Google Cloud CLI
+install_gcloud_cli(){
+	device_64_bit
+	bit64=$?
+	if [ $bit64 -e 0 ]
+	then
+		curl -Lo google-cloud.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-345.0.0-linux-x86_64.tar.gz
+	else
+		curl -Lo google-cloud.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-345.0.0-linux-x86.tar.gz
+	fi
+	
+	# Extract .tar.gz file
+	tar -xzf google-cloud.tar.gz
+	
+	# Run installation script
+	./google-cloud-sdk/install.sh
+}
+
+
+
+# Welcome Script
+welcome_script()
+{
+	sleep $WAITSMALL
+	echo "Changing Welcome Page"
+	sleep $WAITSMALL
+	#backup existing file
+	cd ~
+	cp ../usr/etc/motd ../usr/etc/motd.bak
 #make new welcome file
-echo "Hi $USERNAME!
+echo "xxxxxxxxxxxxxxxxx
+Hi $USERNAME!
 
 Welcome to Termux
 xxxxxxxxxxxxxxxxx
@@ -211,19 +275,34 @@ https://github.com/themobileprof/scripts
 Recommended Keyboard:
 Hacker's Keyboard (https://play.google.com/store/apps/details?id=org.pocketworkstation.pckeyboard)
 
-For help, try:
-~/help/start
 " > ../usr/etc/motd
-cd -
+	cd -
+}
+
+
+
+# delete downloaded file
+clean_up(){
+	rm google-cloud.tar.gz
+	rm -rf env
+}
 
 
 
 
-sleep 1
-echo "
-Install Zsh"
-sleep 3
-bash -c "$(curl -fsSL https://git.io/oh-my-termux)"
 
-# Finalizing setup
-sleep 2
+#########################################
+####### Main program starts below #######
+#########################################
+echo ">>> TheMobileProf.com recommended Setup for Termux"
+echo "Press Y/y to continue:"
+read INSTALL
+# Only continue if user says Yes
+if [ ${INSTALL,,} != 'y' ]
+then
+	exit 0
+else
+	# Start main function if user says yes
+	main
+fi
+
