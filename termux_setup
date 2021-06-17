@@ -55,10 +55,6 @@ main(){
 	echo ">>> Installing Python 3 ..."
 	echo "# Python is a robust programming and scripting language"
 	install python
-	
-	
-	echo ">>> Installing Google Cloud CLI ..."
-	install_gcloud_cli
 
 
 	echo ">>> Installing Neovim ..."
@@ -83,10 +79,14 @@ main(){
 	termux-setup-storage
 
 
-	echo "Install Zsh"
+	echo ">>> Install Zsh"
 	sleep $WAITLONG
 
 	bash -c "$(curl -fsSL https://git.io/oh-my-termux)"
+	
+	
+	echo ">>> Installing Google Cloud CLI ..."
+	install_gcloud_cli
 	
 	
 	# Clean up
@@ -166,7 +166,7 @@ configure_neovim()
 neovim_lang_support ()
 { 
 	if [ "${2,,}" = "y" ]; then
-        	$REPLY = "Y"
+        	REPLY="Y"
 	else
 		echo "Enable $1 support for Neovim? Y/n"
 		read REPLY
@@ -284,6 +284,7 @@ Hacker's Keyboard (https://play.google.com/store/apps/details?id=org.pocketworks
 # delete downloaded file
 clean_up(){
 	rm google-cloud.tar.gz
+	rm -rf env
 }
 
 
