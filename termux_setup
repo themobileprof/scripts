@@ -6,8 +6,8 @@
 
 
 # Constants ########
-readonly WAITLONG=4
-readonly WAITSMALL=2
+readonly WAITLONG=3
+readonly WAITSMALL=1
 ####################
 
 
@@ -81,13 +81,13 @@ main(){
 	echo "
 	>>> Please accept the Popup asking for permission 
 	# this configures storage link for your file manager"
-	sleep WAITLONG
+	sleep $WAITLONG
 	termux-setup-storage
 
 
 	echo "
 	Install Zsh"
-	sleep WAITLONG
+	sleep $WAITLONG
 
 	bash -c "$(curl -fsSL https://git.io/oh-my-termux)"
 }
@@ -107,7 +107,7 @@ update_mirror()
 # The installation function
 install()
 {
-	sleep WAITLONG
+	sleep $WAITLONG
 	pkg install -y $1
 }
 
@@ -117,7 +117,7 @@ install()
 configure_git(){
 	echo "
 	>>> Now let's configure Git ..."
-	sleep WAITSMALL
+	sleep $WAITSMALL
 	echo "What is your name?"
 	read USERNAME
 	git config --global user.name "$USERNAME"
@@ -137,7 +137,7 @@ configure_neovim()
 {
 	echo "
 	>>> Setup Neovim ..."
-	sleep WAITSMALL
+	sleep $WAITSMALL
 	# Install vim-plug
 	curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
 	       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -166,7 +166,7 @@ configure_neovim()
 # Configure COC on NVIM and enable language support
 neovim_lang_support ()
 { 
-	if [ "${3,,}" = "y" ]; then
+	if [ "${2,,}" = "y" ]; then
         	$REPLY = "Y"
 	else
 		echo "Enable $1 support for Neovim? Y/n"
@@ -174,12 +174,12 @@ neovim_lang_support ()
 	fi
 
 	if [ "${REPLY,,}" = "y" ]; then
-		nvim +"CocInstall -sync coc-$2" +qall
+		nvim +"CocInstall -sync coc-${1^^}" +qall
 		echo "Enabled $1
 		+++++++"
-		sleep WAITSMALL
+		sleep $WAITSMALL
 	else
-		echo "$1 not enabled
+		echo "${1^^} not enabled
 		-------"
 	fi
 }
@@ -191,7 +191,7 @@ neovim_plugins()
 	# Run :PlugInstall on Neovim to install plugins in the config directory
 	echo "
 	>>> Installing Neovim plugins ..."
-	sleep WAITSMALL
+	sleep $WAITSMALL
 	nvim --headless +PlugInstall +qall
 
 
@@ -201,49 +201,21 @@ neovim_plugins()
 	Installing prettier ..."
 	nvim +'CocInstall -sync coc-prettier' +qall
 
-
-
+	
+	# Install languages support for Neovim
+	languages=(css html tsserver pyright phpls yaml git sql json bash)
+	
 	# Ascertain if user would like to autoinstall Neovim language support plugins
 	echo "Auto install all languages support in Neovim? Y/n"
 	read ALLYES
 	
-	
-
-	# Language support for CSS
-	neovim_lang_support CSS css ALLYES
-
-	# Language support for HTML
-	neovim_lang_support HTML html ALLYES
-
-	# Language support for Javascript
-	neovim_lang_support Javascript tsserver ALLYES
-
-	# Language support for Python
-	neovim_lang_support Python pyright ALLYES
-
-	# Language support for PHP
-	neovim_lang_support PHP phpls ALLYES
-
-	# Language support for YAML
-	neovim_lang_support YAML yaml ALLYES
-
-	# Language support for GIT
-	neovim_lang_support GIT git ALLYES
-
-	# Language support for SQL
-	neovim_lang_support SQL sql ALLYES
-
-	# Language support for Json
-	neovim_lang_support JSON json ALLYES
-
-	# Language support for Bash
-	neovim_lang_support Bash sh ALLYES
+	for lang in "${languages[@]}"; do neovim_lang_support $lang $ALLYES; done
 	
 	
 	# Finalize config
 	echo "
 	Finalizing Neovim plugin configurations"
-	sleep WAITLONG
+	sleep $WAITLONG
 	nvim +CocUpdateSync +qall
 }
 
@@ -252,10 +224,10 @@ neovim_plugins()
 # Welcome Script
 welcome_script()
 {
-	sleep WAITSMALL
+	sleep $WAITSMALL
 	echo "
 	Changing Welcome Page"
-	sleep WAITSMALL
+	sleep $WAITSMALL
 	#backup existing file
 	cd ~
 	cp ../usr/etc/motd ../usr/etc/motd.bak
