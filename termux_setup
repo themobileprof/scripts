@@ -52,24 +52,32 @@ main(){
 	install nodejs
 
 
-	echo ">>> Installing Python 3 ..."
-	echo "# Python is a robust programming and scripting language"
-	install python
+	echo ">>> Installing PHP ..."
+	echo "# PHP is the most used Server sided language"
+	install php
 
 
 	echo ">>> Installing Neovim ..."
 	echo "# Neovim is a robust terminal code editor that is forked from Vim"
 	install neovim
 
-	# Configure Neovim
-	configure_neovim
-
-	# Install Neovim Plugins
-	neovim_plugins
-
 
 	# Configure welcome script
 	welcome_script
+
+
+	# Configure Neovim
+	configure_neovim
+
+
+	# Select Max or Mini
+	echo "Do you want the full installation? Y/n"
+	read SIZE
+	if [ "${INSTALLATION,,}" = "y" ]; then
+		full
+	else
+		mini
+	fi
 
 
 	# Setup Storage symlink on Termux home
@@ -84,16 +92,35 @@ main(){
 
 	bash -c "$(curl -fsSL https://git.io/oh-my-termux)"
 	
+}
+
+
+full(){
+
+	# Install Neovim Plugins
+	neovim_plugins
 	
-	echo ">>> Installing Google Cloud CLI ..."
+	
+	# echo ">>> Installing Google Cloud CLI ..."
 	install_gcloud_cli
 	
 	
+	# echo ">>> Installing Python 3 ..."
+	echo "# Python is a robust programming and scripting language"
+	install python
+
+
 	# Clean up
 	clean_up
 }
 
 
+mini(){
+
+	# Install Neovim Plugins
+	neovim_plugins mini
+
+}
 
 #Update Mirror
 update_mirror()
@@ -155,7 +182,7 @@ configure_neovim()
 		git clone https://github.com/themobileprof/env ~/env
 	fi
 
-	# Copy the Neovim config file ~/env/init.vim to ~/.config/nvim
+	# Copy the Neovim config file to ~/.config/nvim
 	cp $NVIMFILE $NVIMDIR
 
 }
@@ -199,14 +226,19 @@ neovim_plugins()
 	nvim +'CocInstall -sync coc-prettier' +qall
 
 	
-	# Install languages support for Neovim
-	languages=(css html tsserver pyright phpls yaml git sql json bash)
-	
-	# Ascertain if user would like to autoinstall Neovim language support plugins
-	echo "Auto install all languages support in Neovim? Y/n"
-	read ALLYES
-	
-	for lang in "${languages[@]}"; do neovim_lang_support $lang $ALLYES; done
+	# For a mini installation	
+	if [ "${1,,}" != "mini" ]; then
+		# Install languages support for Neovim
+		languages=(css html tsserver pyright phpls yaml git sql json bash)
+
+		
+		
+		# Ascertain if user would like to autoinstall Neovim language support plugins
+		echo "Auto install all languages support in Neovim? Y/n"
+		read ALLYES
+		
+		for lang in "${languages[@]}"; do neovim_lang_support $lang $ALLYES; done
+	fi
 	
 	
 	# Finalize config
