@@ -1,0 +1,121 @@
+#!/bin/bash
+source env
+
+# Install Neovim Code editor
+
+# Main function
+main(){
+
+	echo ">>> Installing Neovim ..."
+	echo "# Neovim is a robust terminal code editor that is forked from Vim"
+	install neovim
+
+
+	# Configure Neovim
+	configure_neovim
+
+    # Clean up
+    rm -rf env
+}
+
+# Configure Neovim
+configure_neovim()
+{
+	echo ">>> Setup Neovim ..."
+	sleep $WAITSMALL
+	# Install vim-plug
+	curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+	       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+	# Ensure ~/.config/nvim has been created
+	NVIMDIR=~/.config/nvim
+	if [[ ! -d "$NVIMDIR" ]] 
+	then
+		mkdir -p $NVIMDIR
+	fi
+
+	# Ensure ~/env/init.vim exists
+	NVIMFILE=~/env/init.vim
+	if [[ ! -f "$NVIMFILE" ]] 
+	then
+		git clone https://github.com/scripts/files/env ~/env
+	fi
+
+	# Copy the Neovim config file to ~/.config/nvim
+	cp $NVIMFILE $NVIMDIR
+
+
+	# Select Max or Mini
+	echo "Do you want the full installation? Y/n"
+	read SIZE
+	if [ "${SIZE,,}" = "y" ]; then
+		neovim_plugins
+	else
+		neovim_plugins mini
+	fi
+
+}
+
+
+
+# Configure COC on NVIM and enable language support
+neovim_lang_support ()
+{ 
+	if [ "${2,,}" = "y" ]; then
+        	REPLY="Y"
+	else
+		echo "Enable $1 support for Neovim? Y/n"
+		read REPLY
+	fi
+
+	if [ "${REPLY,,}" = "y" ]; then
+		nvim +"CocInstall -sync coc-${1^^}" +qall
+		echo "Enabled $1
+		+++++++"
+		sleep $WAITSMALL
+	else
+		echo "${1^^} not enabled
+		-------"
+	fi
+}
+
+
+
+neovim_plugins()
+{
+	# Run :PlugInstall on Neovim to install plugins in the config directory
+	echo ">>> Installing Neovim plugins ..."
+	sleep $WAITSMALL
+	nvim --headless +PlugInstall +qall
+
+
+
+	# Install Prettier
+	echo "Installing prettier ..."
+	nvim +'CocInstall -sync coc-prettier' +qall
+
+	
+	# For a mini installation	
+	if [ "${1,,}" != "mini" ]; then
+		# Install languages support for Neovim
+		languages=(css html tsserver pyright phpls yaml git sql json bash)
+
+		
+		
+		# Ascertain if user would like to autoinstall Neovim language support plugins
+		echo "Auto install all languages support in Neovim? Y/n"
+		read ALLYES
+		
+		for lang in "${languages[@]}"; do neovim_lang_support $lang $ALLYES; done
+	fi
+	
+	
+	# Finalize config
+	echo "
+	Finalizing Neovim plugin configurations"
+	sleep $WAITLONG
+	nvim +CocUpdateSync +qall
+}
+
+# Main App
+main

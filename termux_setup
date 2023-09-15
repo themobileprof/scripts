@@ -15,7 +15,7 @@ readonly WAITSMALL=1
 # main function
 main(){
 	# Update Package Termux source mirror
-	update_mirror
+	# update_mirror
 
 
 	echo ">>> Updating Termux ..."
@@ -47,37 +47,8 @@ main(){
 	configure_git
 
 
-	echo ">>> Installing Nodejs & npm ..."
-	echo "# NodeJs enables server-side Javascript"
-	install nodejs
-
-
-	echo ">>> Installing PHP ..."
-	echo "# PHP is the most used Server sided language"
-	install php
-
-
-	echo ">>> Installing Neovim ..."
-	echo "# Neovim is a robust terminal code editor that is forked from Vim"
-	install neovim
-
-
 	# Configure welcome script
 	welcome_script
-
-
-	# Configure Neovim
-	configure_neovim
-
-
-	# Select Max or Mini
-	echo "Do you want the full installation? Y/n"
-	read SIZE
-	if [ "${INSTALLATION,,}" = "y" ]; then
-		full
-	else
-		mini
-	fi
 
 
 	# Setup Storage symlink on Termux home
@@ -92,42 +63,6 @@ main(){
 
 	bash -c "$(curl -fsSL https://git.io/oh-my-termux)"
 	
-}
-
-
-full(){
-
-	# Install Neovim Plugins
-	neovim_plugins
-	
-	
-	# echo ">>> Installing Google Cloud CLI ..."
-	install_gcloud_cli
-	
-	
-	# echo ">>> Installing Python 3 ..."
-	echo "# Python is a robust programming and scripting language"
-	install python
-
-
-	# Clean up
-	clean_up
-}
-
-
-mini(){
-
-	# Install Neovim Plugins
-	neovim_plugins mini
-
-}
-
-#Update Mirror
-update_mirror()
-{
-	echo "deb https://grimler.se/termux-packages-24 stable main" > $PREFIX/etc/apt/sources.list
-	echo "deb https://grimler.se/game-packages-24 games stable" > $PREFIX/etc/apt/sources.list.d/game.list
-	echo "deb https://grimler.se/science-packages-24 science stable" > $PREFIX/etc/apt/sources.list.d/science.list
 }
 
 
@@ -159,130 +94,6 @@ configure_git(){
 
 
 
-# Configure Neovim
-configure_neovim()
-{
-	echo ">>> Setup Neovim ..."
-	sleep $WAITSMALL
-	# Install vim-plug
-	curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-	       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
-	# Ensure ~/.config/nvim has been created
-	NVIMDIR=~/.config/nvim
-	if [[ ! -d "$NVIMDIR" ]] 
-	then
-		mkdir -p $NVIMDIR
-	fi
-
-	# Ensure ~/env/init.vim exists
-	NVIMFILE=~/env/init.vim
-	if [[ ! -f "$NVIMFILE" ]] 
-	then
-		git clone https://github.com/themobileprof/env ~/env
-	fi
-
-	# Copy the Neovim config file to ~/.config/nvim
-	cp $NVIMFILE $NVIMDIR
-
-}
-
-
-
-# Configure COC on NVIM and enable language support
-neovim_lang_support ()
-{ 
-	if [ "${2,,}" = "y" ]; then
-        	REPLY="Y"
-	else
-		echo "Enable $1 support for Neovim? Y/n"
-		read REPLY
-	fi
-
-	if [ "${REPLY,,}" = "y" ]; then
-		nvim +"CocInstall -sync coc-${1^^}" +qall
-		echo "Enabled $1
-		+++++++"
-		sleep $WAITSMALL
-	else
-		echo "${1^^} not enabled
-		-------"
-	fi
-}
-
-
-
-neovim_plugins()
-{
-	# Run :PlugInstall on Neovim to install plugins in the config directory
-	echo ">>> Installing Neovim plugins ..."
-	sleep $WAITSMALL
-	nvim --headless +PlugInstall +qall
-
-
-
-	# Install Prettier
-	echo "Installing prettier ..."
-	nvim +'CocInstall -sync coc-prettier' +qall
-
-	
-	# For a mini installation	
-	if [ "${1,,}" != "mini" ]; then
-		# Install languages support for Neovim
-		languages=(css html tsserver pyright phpls yaml git sql json bash)
-
-		
-		
-		# Ascertain if user would like to autoinstall Neovim language support plugins
-		echo "Auto install all languages support in Neovim? Y/n"
-		read ALLYES
-		
-		for lang in "${languages[@]}"; do neovim_lang_support $lang $ALLYES; done
-	fi
-	
-	
-	# Finalize config
-	echo "
-	Finalizing Neovim plugin configurations"
-	sleep $WAITLONG
-	nvim +CocUpdateSync +qall
-}
-
-
-# Get Device 32bit/64bit
-device_64_bit(){
-	cpu=`uname -m`
-	if [[ $cpu == *"64"* ]]
-	then
-		return 0
-	elif [[ $cpu == *"armv7"* ]]
-	then
-		return 1
-	else
-		return 0
-	fi
-}
-
-
-
-# Download and Install Google Cloud CLI
-install_gcloud_cli(){
-	device_64_bit
-	bit64=$?
-	if [ $bit64 -e 0 ]
-	then
-		curl -Lo google-cloud.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-345.0.0-linux-x86_64.tar.gz
-	else
-		curl -Lo google-cloud.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-345.0.0-linux-x86.tar.gz
-	fi
-	
-	# Extract .tar.gz file
-	tar -xzf google-cloud.tar.gz
-	
-	# Run installation script
-	./google-cloud-sdk/install.sh
-}
-
 
 
 # Welcome Script
@@ -303,21 +114,10 @@ xxxxxxxxxxxxxxxxx
 
 TheMobileProf.com Scripts Repo:
 https://github.com/themobileprof/scripts
-
-Recommended Keyboard:
-Hacker's Keyboard (https://play.google.com/store/apps/details?id=org.pocketworkstation.pckeyboard)
-
 " > ../usr/etc/motd
 	cd -
 }
 
-
-
-# delete downloaded file
-clean_up(){
-	rm google-cloud.tar.gz
-	rm -rf env
-}
 
 
 

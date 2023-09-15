@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Install applications
+
+# Constants ########
+readonly WAITLONG=3
+readonly WAITSMALL=1
+####################
+
+install()
+{
+	sleep $WAITLONG
+	pkg install -y $1
+}
