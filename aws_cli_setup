@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# Install AWS CLI
+
+# Main function
+main() {
+    install_aws_cli
+}
+
+# Get Device 32-bit/64-bit
+device_64_bit() {
+    cpu=$(uname -m)
+    if [[ $cpu == *"64"* ]]; then
+        return 0
+    elif [[ $cpu == *"armv7"* ]]; then
+        return 1
+    else
+        return 0
+    fi
+}
+
+# Download and Install AWS CLI
+install_aws_cli() {
+    device_64_bit
+    bit64=$?
+    if [ $bit64 -eq 0 ]; then
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    else
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86.zip" -o "awscliv2.zip"
+    fi
+
+    # Unzip the downloaded file
+    unzip awscliv2.zip
+
+    # Run the installation script
+    ./aws/install
+
+    # Clean up
+    rm -rf aws awscliv2.zip
+}
+
+# Main App
+main
+
+
+
+# curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" || exit 1
+# unzip awscli-bundle.zip || exit 1
+
+# unzip awscli-bundle.zip
+
+# sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+
+# ./awscli-bundle/install -b ~/bin/aws
+
+# ./awscli-bundle/install -h
