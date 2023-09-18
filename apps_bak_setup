@@ -1,0 +1,27 @@
+#!/bin/bash
+source env
+
+# Install applications
+
+# Main function
+main(){
+    # Install Applications
+    echo ">>> Installing Nodejs & npm ..."
+	echo "# NodeJs enables server-side Javascript"
+	install nodejs
+
+
+	echo ">>> Installing PHP ..."
+	echo "# PHP is the most used Server sided language"
+	install php
+
+
+	# echo ">>> Installing Python 3 ..."
+	echo "# Python is a robust programming and scripting language"
+	install python
+
+
+}
+
+# The main app
+main
