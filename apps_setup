@@ -3,8 +3,7 @@
 # Source the environment script containing the install function
 source ./environment 
 
-# Now you can call the install function
-install
+
 
 # Main function
 main() {
@@ -22,6 +21,8 @@ main() {
     install python
 }
 
+# Now you can call the install function
+install
 # The main app
 main
 
