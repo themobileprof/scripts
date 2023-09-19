@@ -5,7 +5,7 @@ source environment
 
 
 # Main function
-main() {
+# main() {
     # Install Applications
     echo ">>> Installing Nodejs & npm ..."
     echo "# NodeJs enables server-side Javascript"
@@ -18,10 +18,10 @@ main() {
     echo ">>> Installing Python 3 ..."
     echo "# Python is a robust programming and scripting language"
     install python
-}
+#}
 
 # Now you can call the install function
 install
 # The main app
-main
+# main
 
