@@ -1,11 +1,21 @@
 #!/bin/bash
 
 # Source the environment script containing the install function
-source environment
+# source environment
 
+# Constants ########
+readonly WAITLONG=3
+readonly WAITSMALL=1
+####################
+
+install()
+{
+	sleep $WAITLONG
+	pkg install -y $1
+}
 
 # Main function
-# main() {
+main() {
     # Install Applications
     echo ">>> Installing Nodejs & npm ..."
     echo "# NodeJs enables server-side Javascript"
@@ -18,10 +28,10 @@ source environment
     echo ">>> Installing Python 3 ..."
     echo "# Python is a robust programming and scripting language"
     install python
-#}
+}
 
 # Now you can call the install function
 install
 # The main app
-# main
+main
 
