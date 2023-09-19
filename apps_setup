@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Source the env file to access the install function
-source env
+source environment 
 
 # Install applications
 
