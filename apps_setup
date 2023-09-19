@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Source the environment script containing the install function
-source environment 
-
+source environment
 
 
 # Main function
