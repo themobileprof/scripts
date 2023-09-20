@@ -8,39 +8,36 @@ main(){
     install_gcloud_cli
 }
 
-
 # Get Device 32bit/64bit
 device_64_bit(){
-	cpu=`uname -m`
-	if [[ $cpu == *"64"* ]]
-	then
-		return 0
-	elif [[ $cpu == *"armv7"* ]]
-	then
-		return 1
-	else
-		return 0
-	fi
+    cpu=`uname -m`
+    if [[ $cpu == *"64"* ]]
+    then
+        return 0
+    elif [[ $cpu == *"armv7"* ]]
+    then
+        return 1
+    else
+        return 0
+    fi
 }
-
-
 
 # Download and Install Google Cloud CLI
 install_gcloud_cli(){
-	device_64_bit
-	bit64=$?
-	if [ $bit64 -e 0 ]
-	then
-		curl -Lo google-cloud.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-345.0.0-linux-x86_64.tar.gz
-	else
-		curl -Lo google-cloud.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-345.0.0-linux-x86.tar.gz
-	fi
-	
-	# Extract .tar.gz file
-	tar -xzf google-cloud.tar.gz
-	
-	# Run installation script
-	./google-cloud-sdk/install.sh
+    device_64_bit
+    bit64=$?
+    if [ $bit64 -eq 0 ]
+    then
+        curl -Lo google-cloud.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-345.0.0-linux-x86_64.tar.gz
+    else
+        curl -Lo google-cloud.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-345.0.0-linux-x86.tar.gz
+    fi
+
+    # Extract .tar.gz file
+    tar -xzf google-cloud.tar.gz
+
+    # Run installation script
+    ./google-cloud-sdk/install.sh
 
     # Clean up
     rm google-cloud.tar.gz
