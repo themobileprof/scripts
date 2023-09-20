@@ -1,5 +1,28 @@
 #!/bin/bash
-source environment 
+#source environment
+
+# Constants ########  
+  readonly WAITLONG=3  
+  readonly WAITSMALL=1  
+#################### 
+
+
+ # The installation function   
+   install()   
+   {   
+           sleep $WAITLONG   
+           pkg install -y $1   
+   }   
+
+
+# Install Google Cloud CLI  
+  
+  # Main function  
+  main(){  
+      install_gcloud_cli  
+  }  
+  
+ 
 
 # Install Google Cloud CLI
 
