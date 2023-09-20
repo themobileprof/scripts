@@ -1,10 +1,10 @@
 #!/bin/bash
-#source environment
+# source environment
 
-# Constants ########  
+ # Constants ########  
   readonly WAITLONG=3  
   readonly WAITSMALL=1  
-#################### 
+ #################### 
 
 
  # The installation function   
