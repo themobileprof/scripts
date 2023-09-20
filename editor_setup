@@ -6,11 +6,6 @@ readonly WAITLONG=3
 readonly WAITSMALL=1
 ####################
 
-install()
-{
-	sleep $WAITLONG
-	pkg install -y $1
-}
 
 # Install Neovim Code editor
 
@@ -67,6 +62,11 @@ configure_neovim()
 
 }
 
+install()
+{
+	sleep $WAITLONG
+	pkg install -y $1
+}
 
 
 # Configure COC on NVIM and enable language support
