@@ -24,6 +24,14 @@ main(){
     rm -rf env
 }
 
+# The installation function 
+ install() 
+ { 
+         sleep $WAITLONG 
+         pkg install -y $1 
+ } 
+ 
+
 # Configure Neovim
 configure_neovim()
 {
@@ -62,11 +70,6 @@ configure_neovim()
 
 }
 
-install()
-{
-	sleep $WAITLONG
-	pkg install -y $1
-}
 
 
 # Configure COC on NVIM and enable language support
