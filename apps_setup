@@ -31,7 +31,7 @@ main() {
 }
 
 # Now you can call the install function
-install
+# install
 # The main app
 main
 
