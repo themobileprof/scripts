@@ -27,7 +27,7 @@ main() {
 
     echo ">>> Installing Python 3 ..."
     echo "# Python is a robust programming and scripting language"
-    install python3.8.10
+    install python
 }
 
 # Now you can call the install function
