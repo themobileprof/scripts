@@ -1,5 +1,17 @@
 #!/bin/bash
-source env
+# Source the environment script containing the install function 
+ # source environment 
+  
+ # Constants ######## 
+ readonly WAITLONG=3 
+ readonly WAITSMALL=1 
+ #################### 
+  
+ install() 
+ { 
+         sleep $WAITLONG 
+         pkg install -y $1 
+ }
 
 # Install applications
 
