@@ -4,14 +4,14 @@ This is a collection of scripts that make
 it easy to setup and use Termux on Android for 
 beginner programmers.
 
-**PS:** For iOS users, unfortunately, Termux does no work! More unfortunately, there are no comparative alternatives.
-However, you can try **a-shell** for local programming (https://apps.apple.com/us/app/a-shell/id1473805438) and 
-**xTerminal** for remote SSH access (https://apps.apple.com/us/app/xterminal-ssh-terminal-shell/id1544728400) - extra note: xTerminal is not free
-
 ## Requirements
 + Install Termux (Linux Terminal emulator) from **F-Droid** (https://f-droid.org/packages/com.termux), 
 you can also download the Termux APK (Version 0.118.0) directly from the F-Droid repo here: https://f-droid.org/repo/com.termux_118.apk
 + We recommend at least a 2GB RAM Android phone.
+
+<font size="2"> **PS:** For iOS users, unfortunately, Termux does no work! More unfortunately, there are no comparative alternatives.
+However, you can try **a-shell** for local programming (https://apps.apple.com/us/app/a-shell/id1473805438) and 
+**xTerminal** for remote SSH access (https://apps.apple.com/us/app/xterminal-ssh-terminal-shell/id1544728400) - extra note: xTerminal is not free </font>
 
 ## Initial Setup file
 The very first file to run after downloading   
