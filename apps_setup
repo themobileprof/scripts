@@ -27,7 +27,9 @@ main() {
 
     echo ">>> Installing Python 3 ..."
     echo "# Python is a robust programming and scripting language"
-    install python
+    install tur-repo
+    apt install python3.8
+    ln -s $PREFIX/bin/python3.8 $PREFIX/bin/python
 }
 
 # Now you can call the install function
