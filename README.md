@@ -9,7 +9,7 @@ beginner programmers.
 you can also download the Termux APK (Version 0.118.0) directly from the F-Droid repo here: https://f-droid.org/repo/com.termux_118.apk
 + We recommend at least a 2GB RAM Android phone.
 
-<font size="2"> **PS:** For iOS users, unfortunately, Termux does no work! More unfortunately, there are no comparative alternatives.
+<font size="1"> **PS:** For iOS users, unfortunately, Termux does no work! More unfortunately, there are no comparative alternatives.
 However, you can try **a-shell** for local programming (https://apps.apple.com/us/app/a-shell/id1473805438) and 
 **xTerminal** for remote SSH access (https://apps.apple.com/us/app/xterminal-ssh-terminal-shell/id1544728400) - extra note: xTerminal is not free </font>
 
