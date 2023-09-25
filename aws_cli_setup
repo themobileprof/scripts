@@ -44,7 +44,10 @@ install_aws_cli_v2() {
     unzip awscliv2.zip
 
     # Run the installation script
-    ./aws/install
+    install ./aws
+
+      # Clean up 
+     rm -rf aws awscliv2.zip 
 
     # Check if the installation was successful
     if [ $? -eq 0 ]; then
