@@ -16,10 +16,10 @@ if [ -f /usr/local/bin/aws ]; then
     echo "* Current version:"
     /usr/local/bin/aws --version
     echo "* Updating..."
-    sudo ./aws/install --update
+    ./aws/install --update
 else
     echo "* Installing..."
-    sudo ./aws/install
+    ./aws/install
 fi
 echo
 echo "* Install and activate bash autocompletion..."
