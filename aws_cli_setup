@@ -16,7 +16,7 @@ install_aws_cli_v2() {
     unzip awscliv2.zip
 
     # Run the installation script with a custom installation directory in your home directory
-    ./aws/install -i ~/aws-cli -b ~/bin
+    ./aws/install -i ~/ -b ~/bin
 
     # Clean up
     rm -rf aws awscliv2.zip
