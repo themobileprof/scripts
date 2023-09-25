@@ -15,8 +15,8 @@ install_aws_cli_v2() {
     # Unzip the installation script
     unzip awscliv2.zip
 
-    # Run the installation script
-    ./aws/install -i /data/data/com.termux/files/usr/local/bin/aws
+    # Run the installation script with a custom installation directory in your home directory
+    ./aws/install -i ~/aws-cli -b ~/bin
 
     # Clean up
     rm -rf aws awscliv2.zip
@@ -24,6 +24,8 @@ install_aws_cli_v2() {
     # Check if the installation was successful
     if [ $? -eq 0 ]; then
         echo "AWS CLI version 2 has been successfully installed."
+        echo 'export PATH="$HOME/bin:$PATH"' >> ~/.bashrc  # Add the binary directory to your PATH
+        source ~/.bashrc  # Apply the changes to your current shell session
         aws --version
     else
         echo "Failed to install AWS CLI version 2."
