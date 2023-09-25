@@ -1,26 +1,61 @@
+# #!/bin/bash
+
+# # Install AWS CLI
+
+# # Main function
+# main() {
+#     install_aws_cli
+# }
+
+# # Download and Install AWS CLI
+# install_aws_cli() {
+#     # Install AWS CLI using pip
+#     pip install awscli
+
+#     # Check if the installation was successful
+#     if [ $? -eq 0 ]; then
+#         echo "AWS CLI has been successfully installed."
+#         aws --version
+#     else
+#         echo "Failed to install AWS CLI."
+#         exit 1
+#     fi
+# }
+
+# # Run the main function
+# main
+
+
 #!/bin/bash
 
-# Install AWS CLI
+# Install AWS CLI version 2
 
 # Main function
 main() {
-    install_aws_cli
+    install_aws_cli_v2
 }
 
-# Download and Install AWS CLI
-install_aws_cli() {
-    # Install AWS CLI using pip
-    pip install awscli
+# Download and Install AWS CLI version 2
+install_aws_cli_v2() {
+    # Download the AWS CLI version 2 installation script
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"
+
+    # Unzip the installation script
+    unzip awscliv2.zip
+
+    # Run the installation script
+    ./aws/install
 
     # Check if the installation was successful
     if [ $? -eq 0 ]; then
-        echo "AWS CLI has been successfully installed."
+        echo "AWS CLI version 2 has been successfully installed."
         aws --version
     else
-        echo "Failed to install AWS CLI."
+        echo "Failed to install AWS CLI version 2."
         exit 1
     fi
 }
 
 # Run the main function
 main
+
