@@ -7,43 +7,20 @@ main() {
     install_aws_cli
 }
 
-# Get Device 32-bit/64-bit
-device_64_bit() {
-    arch=$(arch)
-    if [[ "$arch" == "x86_64" ]]; then
-        return 0
-    elif [[ "$arch" == "armv7l" ]]; then
-        return 1
-    else
-        return 0
-    fi
-}
-
 # Download and Install AWS CLI
 install_aws_cli() {
-    device_64_bit
-    bit64=$?
-    if [ $bit64 -eq 0 ]; then
-        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-    else
-        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86.zip" -o "awscliv2.zip"
-    fi
+    # Install AWS CLI using pip
+    pip install awscli
 
-    # Check if the download was successful
-    if [ $? -ne 0 ]; then
-        echo "Failed to download AWS CLI."
+    # Check if the installation was successful
+    if [ $? -eq 0 ]; then
+        echo "AWS CLI has been successfully installed."
+        aws --version
+    else
+        echo "Failed to install AWS CLI."
         exit 1
     fi
-
-    # Unzip the downloaded file
-    unzip awscliv2.zip
-
-    # Run the installation script
-    ./aws/install
-
-    # Clean up
-    rm -rf aws awscliv2.zip
 }
 
-# Main App
+# Run the main function
 main
