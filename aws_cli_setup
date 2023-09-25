@@ -9,10 +9,10 @@ main() {
 
 # Get Device 32-bit/64-bit
 device_64_bit() {
-    cpu=$(uname -m)
-    if [[ $cpu == *"64"* ]]; then
+    arch=$(arch)
+    if [[ "$arch" == "x86_64" ]]; then
         return 0
-    elif [[ $cpu == *"armv7"* ]]; then
+    elif [[ "$arch" == "armv7l" ]]; then
         return 1
     else
         return 0
@@ -29,6 +29,12 @@ install_aws_cli() {
         curl "https://awscli.amazonaws.com/awscli-exe-linux-x86.zip" -o "awscliv2.zip"
     fi
 
+    # Check if the download was successful
+    if [ $? -ne 0 ]; then
+        echo "Failed to download AWS CLI."
+        exit 1
+    fi
+
     # Unzip the downloaded file
     unzip awscliv2.zip
 
@@ -41,16 +47,3 @@ install_aws_cli() {
 
 # Main App
 main
-
-
-
-# curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" || exit 1
-# unzip awscli-bundle.zip || exit 1
-
-# unzip awscli-bundle.zip
-
-# sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
-
-# ./awscli-bundle/install -b ~/bin/aws
-
-# ./awscli-bundle/install -h
