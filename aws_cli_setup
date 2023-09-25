@@ -1,31 +1,3 @@
-# #!/bin/bash
-
-# # Install AWS CLI
-
-# # Main function
-# main() {
-#     install_aws_cli
-# }
-
-# # Download and Install AWS CLI
-# install_aws_cli() {
-#     # Install AWS CLI using pip
-#     pip install awscli
-
-#     # Check if the installation was successful
-#     if [ $? -eq 0 ]; then
-#         echo "AWS CLI has been successfully installed."
-#         aws --version
-#     else
-#         echo "Failed to install AWS CLI."
-#         exit 1
-#     fi
-# }
-
-# # Run the main function
-# main
-
-
 #!/bin/bash
 
 # Install AWS CLI version 2
@@ -44,10 +16,10 @@ install_aws_cli_v2() {
     unzip awscliv2.zip
 
     # Run the installation script
-    install ./aws
+    ./aws/install -i /data/data/com.termux/files/usr/local/bin/aws
 
-      # Clean up 
-     rm -rf aws awscliv2.zip 
+    # Clean up
+    rm -rf aws awscliv2.zip
 
     # Check if the installation was successful
     if [ $? -eq 0 ]; then
@@ -61,4 +33,3 @@ install_aws_cli_v2() {
 
 # Run the main function
 main
-
