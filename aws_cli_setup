@@ -1,7 +1,8 @@
 #!/bin/bash -e
 
 # https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html#cliv2-linux-install
-# https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-completion.html
+
+
 
 # echo "* Switching to tmp folder..."
 # cd "$(mktemp -d)"
