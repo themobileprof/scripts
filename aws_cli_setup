@@ -1,35 +1,34 @@
-#!/bin/bash
+#!/bin/bash -e
 
-# Install AWS CLI version 2
+# https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html#cliv2-linux-install
+# https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-completion.html
 
-# Main function
-main() {
-    install_aws_cli_v2
-}
-
-# Download and Install AWS CLI version 2
-install_aws_cli_v2() {
-    # Download the AWS CLI version 2 installation script
-    curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"
-
-    # Unzip the installation script
-    unzip awscliv2.zip
-
-    # Run the installation script with the default installation path
-    ./aws/install
-
-    # Clean up
-    rm -rf aws awscliv2.zip
-
-    # Check if the installation was successful
-    if [ $? -eq 0 ]; then
-        echo "AWS CLI version 2 has been successfully installed."
-        aws --version
-    else
-        echo "Failed to install AWS CLI version 2."
-        exit 1
-    fi
-}
-
-# Run the main function
-main
+echo "* Switching to tmp folder..."
+cd "$(mktemp -d)"
+echo
+echo "* Downloading the AWS cli..."
+wget -q "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -O awscliv2.zip
+echo
+echo "* Unzipping it..."
+unzip -q awscliv2.zip
+echo
+if [ -f /usr/local/bin/aws ]; then
+    echo "* Current version:"
+    /usr/local/bin/aws --version
+    echo "* Updating..."
+    sudo ./aws/install --update
+else
+    echo "* Installing..."
+    sudo ./aws/install
+fi
+echo
+echo "* Install and activate bash autocompletion..."
+if ! grep -q aws_completer ~/.bashrc; then
+    echo "complete -C '/usr/local/bin/aws_completer' aws" | tee -a ~/.bashrc
+fi
+complete -C '/usr/local/bin/aws_completer' aws
+cd -
+echo
+echo "* Installed version:"
+/usr/local/bin/aws --version
+echo
