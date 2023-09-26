@@ -8,6 +8,11 @@ main() {
 
 # Download and Install AWS CLI
 install_aws_cli() {
+
+    python -m venv venv
+
+    source venv/bin/activate
+
     # Install AWS CLI using pip
     pip install awscli
 
