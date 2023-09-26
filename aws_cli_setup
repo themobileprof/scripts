@@ -1,15 +1,31 @@
-#!/bin/bash -e
+#!/bin/bash
 
-# https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html#cliv2-linux-install
+# Install AWS CLI
+
+# Main function
+main() {
+    install_aws_cli
+}
+
+# Download and Install AWS CLI
+install_aws_cli() {
+    # Install AWS CLI using pip
+    pip install awscli
+
+    # Check if the installation was successful
+    if [ $? -eq 0 ]; then
+        echo "AWS CLI has been successfully installed."
+        aws --version
+    else
+        echo "Failed to install AWS CLI."
+        exit 1
+    fi
+}
+
+# Run the main function
+main
 
 
-
-# echo "* Switching to tmp folder..."
-# cd "$(mktemp -d)"
-echo
-echo "* Downloading the AWS cli..."
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -O awscliv2.zip
-echo
-echo "* Unzipping it..."
-unzip -q awscliv2.zip
-echo "Unzip successful"
+# This will work for both 32-bit and 64-bit devices. It doesn't rely on the device architecture 
+# but rather uses the existing Python installation via Termux to install the AWS CLI using pip. 
+# Python and pip are expected to work on both 32-bit and 64-bit devices within the Termux environment. 
