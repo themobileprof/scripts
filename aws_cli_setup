@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Set the path to the Termux prefix directory
-PREFIX=$HOME/.termux
-
 
 # Main function
 main() {
@@ -12,10 +9,7 @@ main() {
 # Download and Install AWS CLI
 install_aws_cli() {
     # Install AWS CLI using pip
-    # pip install awscli
-
-# Install AWS CLI using pip from the Termux prefix directory
-    $PREFIX/bin/pip install awscli
+    pip install awscli
 
     # Check if the installation was successful
     if [ $? -eq 0 ]; then
