@@ -2,7 +2,6 @@
 
 # Install AWS CLI
 
-pkg install python-pip
 
 # Main function
 main() {
