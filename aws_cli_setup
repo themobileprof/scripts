@@ -10,6 +10,7 @@ main() {
 # Download and Install AWS CLI
 install_aws_cli() {
     # Install AWS CLI using pip
+    pkg install python-pip
     pip install awscli
 
     # Check if the installation was successful
