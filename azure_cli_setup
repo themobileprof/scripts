@@ -21,7 +21,7 @@ main() {
 
 # Download and Install Azure CLI
 install_azure_cli() {
-apt-get install -q libffi clang make
+apt-get install -q libffi 
 
   cat << EOF > ~/.bashrc
 PATH=$PATH:~/.local/bin
