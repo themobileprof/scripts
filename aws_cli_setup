@@ -19,6 +19,7 @@ install_aws_cli() {
     # Check if the installation was successful
     if [ $? -eq 0 ]; then
         echo "AWS CLI has been successfully installed."
+        bash
         aws --version
     else
         echo "Failed to install AWS CLI."
