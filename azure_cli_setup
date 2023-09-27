@@ -8,28 +8,37 @@ main() {
 }
 
 # Get Device 32-bit/64-bit
-device_64_bit() {
-    cpu=$(uname -m)
-    if [[ $cpu == *"64"* ]]; then
-        return 0
-    elif [[ $cpu == *"armv7"* ]]; then
-        return 1
-    else
-        return 0
-    fi
-}
+#device_64_bit() {
+#    cpu=$(uname -m)
+ #   if [[ $cpu == *"64"* ]]; then
+#        return 0
+#    elif [[ $cpu == *"armv7"* ]]; then
+ #       return 1
+#    else
+ #       return 0
+ #   fi
+# }
 
 # Download and Install Azure CLI
 install_azure_cli() {
-    device_64_bit
-    bit64=$?
-    if [ $bit64 -eq 0 ]; then
-        curl -sL "https://aka.ms/InstallAzureCLIDeb" | bash
-    else
-        curl -sL "https://aka.ms/InstallAzureCLIDeb" | bash
-    fi
-}
+apt-get install -q libffi clang make
 
+  cat << EOF > ~/.bashrc
+PATH=$PATH:~/.local/bin
+export PATH
+EOF
+
+source ~/.bashrc
+venv ~/.local/lib/azure-cli
+cd ~/.local/lib/azure-cli
+source ./bin/activate
+
+pip install cffi
+pip install azure-cli
+
+pip freeze > requirements.txt
+   
+}
 # Main App
 main
 
