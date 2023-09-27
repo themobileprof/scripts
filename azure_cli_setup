@@ -21,7 +21,9 @@ main() {
 
 # Download and Install Azure CLI
 install_azure_cli() {
+
 apt-get install -q libffi 
+pip install --user virtualenv
 
   cat << EOF > ~/.bashrc
 PATH=$PATH:~/.local/bin
@@ -29,7 +31,7 @@ export PATH
 EOF
 
 source ~/.bashrc
-venv ~/.local/lib/azure-cli
+virtualenv ~/.local/lib/azure-cli
 cd ~/.local/lib/azure-cli
 source ./bin/activate
 
