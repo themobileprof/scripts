@@ -2,6 +2,19 @@
 
 # Install Azure CLI (user-level installation)
 
+
+# Constants ########
+readonly WAITLONG=3
+readonly WAITSMALL=1
+####################
+
+install()
+{
+	sleep $WAITLONG
+	pkg install -y $1
+}
+
+
 # Main function
 main() {
     install_azure_cli
@@ -21,26 +34,31 @@ main() {
 
 # Download and Install Azure CLI
 install_azure_cli() {
+    curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && python get-pip.py
+    install binutils
 
-apt-get install -q libffi 
-pip install --user virtualenv
+    apt-get update -fq && 
+    \apt-get install -q openssl libffi make && 
+    \apt-get install -q openssh && 
+    \pip install --user virtualenv
 
-  cat << EOF > ~/.bashrc
-PATH=$PATH:~/.local/bin
-export PATH
-EOF
+     cat << EOF > ~/.bashrc
+     PATH=$PATH:~/.local/bin
+     export PATH
+     EOF
 
-source ~/.bashrc
-virtualenv ~/.local/lib/azure-cli
-cd ~/.local/lib/azure-cli
-source ./bin/activate
+     source ~/.bashrc
+     virtualenv ~/.local/lib/azure-cli
+     cd ~/.local/lib/azure-cli
+     source ./bin/activate
 
-pip install cffi
-pip install azure-cli
-
-pip freeze > requirements.txt
+     pip install cffi
+     pip install azure-cli
+    
+     pip freeze > requirements.txt
    
 }
+
 # Main App
 main
 
