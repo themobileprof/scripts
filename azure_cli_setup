@@ -41,12 +41,19 @@ install_azure_cli() {
     \apt-get install -q openssl libffi make && 
     \apt-get install -q openssh && 
     \pip install --user virtualenv
+    
+     
+    PATH=$PATH:~/.local/bin
+    export PATH
 
-     cat << EOF > ~/.bashrc
-     PATH=$PATH:~/.local/bin
-     export PATH
-     EOF
+    # Add the PATH commands to .bashrc
+    echo 'PATH=$PATH:~/.local/bin' >> ~/.bashrc
+    echo 'export PATH' >> ~/.bashrc
 
+    # Reload .bashrc to apply changes immediately
+    source ~/.bashrc
+
+ 
      source ~/.bashrc
      virtualenv ~/.local/lib/azure-cli
      cd ~/.local/lib/azure-cli
