@@ -8,21 +8,12 @@
 
 
  # The installation function   
-   install()   
+ install()   
    {   
            sleep $WAITLONG   
            pkg install -y $1   
    }   
 
-
-# Install Google Cloud CLI  
-  
-  # Main function  
-  main(){  
-      install_gcloud_cli  
-  }  
-  
- 
 
 # Install Google Cloud CLI
 
