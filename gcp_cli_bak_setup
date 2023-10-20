@@ -1,4 +1,4 @@
-#! bin
+#!/bin/bash
 
 pkg install python3 openssh
 curl -o sdk.sh sdk.cloud.google.com
