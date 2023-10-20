@@ -6,3 +6,6 @@ chmod +x sdk.sh
 ./sdk.sh --install-dir=$PREFIX
 
 https://gist.github.com/kcubeterm/7e2792366bd6e8c14064f7e2ac109cc7
+
+
+http://broadoakdata.uk/google-cloud-shell-termux/
