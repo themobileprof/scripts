@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# pkg install curl
 
 curl https://sdk.cloud.google.com | bash 
 
