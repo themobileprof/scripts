@@ -1,11 +1,31 @@
 #!/bin/bash
 
-pkg install python3 openssh
-curl -o sdk.sh sdk.cloud.google.com
-chmod +x sdk.sh
-./sdk.sh --install-dir=$PREFIX
 
-https://gist.github.com/kcubeterm/7e2792366bd6e8c14064f7e2ac109cc7
+curl https://sdk.cloud.google.com | bash 
+
+# (without specifying components), this will add gcloud to $PATH
+~/google-cloud-sdk/install.sh --override-components
+
+gcloud components install gsutil 
+
+gcloud init
+
+# gcloud alpha cloud-shell ssh
+# gcloud cloud-shell ssh
 
 
-http://broadoakdata.uk/google-cloud-shell-termux/
+
+
+
+
+
+
+# pkg install python3 openssh
+# curl -o sdk.sh sdk.cloud.google.com
+# chmod +x sdk.sh
+# ./sdk.sh --install-dir=$PREFIX
+
+# https://gist.github.com/kcubeterm/7e2792366bd6e8c14064f7e2ac109cc7
+
+
+# http://broadoakdata.uk/google-cloud-shell-termux/
