@@ -15,9 +15,8 @@ main(){
     echo ""
     sleep $WAITLONG
 
-    echo "Requirements:"
-    echo "1) You must have installed the Google Cloud CLI on your device or have access to Google Cloud shell on your device"
-    echo "2) You must have authenticated your Google Cloud account and attached billing to your project. For more information, visit: https://cloud.google.com/billing/docs/how-to/create-billing-account#create-new-billing-account"
+    echo "Requirement(s):"
+    echo "1) You must have attached billing to your project of choice. For more information, visit: https://cloud.google.com/billing/docs/how-to/create-billing-account#create-new-billing-account"
 
 
     echo "Have you met the requirements above? Y/n"
@@ -26,9 +25,6 @@ main(){
       echo "Aborting..."
       exit 1
     fi
-
-    # Set Project
-    set_project
 
     # Check if there is a default zone, if not, Google init
     zone=$(gcloud config get-value compute/zone)
@@ -63,36 +59,6 @@ main(){
       vm $VMNAME $zone
     fi
 }
-
-
-set_project(){
-  echo "What project would we be working on?"
-  projectList=$(gcloud projects list --format="value(NAME)")
-
-  projArray+=($projectList)
-
-  i=0
-  for project in $projectList
-  do
-      ((i++))
-      echo "$i: $project"
-  done
-
-  while [ -z "$PROJNUM" ]
-  do
-    read -p "Please select (1-$i): " PROJNUM
-    if [[ -n ${PROJNUM//[0-9]/} ]]; then
-      unset PROJNUM
-    fi
-  done
-  
-  PROJECT=${projArray[(($PROJNUM-1))]}
-  echo "You are about to set $PROJECT as your default project, press <Enter> to continue"
-  read
-
-  gcloud config set project $PROJECT
-}
-
 
 
 free_vm(){
