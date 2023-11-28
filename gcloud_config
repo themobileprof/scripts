@@ -1,32 +1,4 @@
 
-set_project(){
-  echo "What project would we be working on?"
-  projectList=$(gcloud projects list --format="value(NAME)")
-
-  projArray+=($projectList)
-
-  i=0
-  for project in $projectList
-  do
-      ((i++))
-      echo "$i: $project"
-  done
-
-  while [ -z "$PROJNUM" ]
-  do
-    read -p "Please select (1-$i): " PROJNUM
-    if [[ -n ${PROJNUM//[0-9]/} ]]; then
-      unset PROJNUM
-    fi
-  done
-  
-  PROJECT=${projArray[(($PROJNUM-1))]}
-  echo "You are to set $PROJECT as your default project, press <Enter> to continue"
-  read
-
-  gcloud config set project $PROJECT
-}
-
 zone_setup(){
   ############################################################
   ## DO NOT ASSUME THE ZONES AND REGIONS - GET IT FROM GCLOUD
