@@ -1,0 +1,76 @@
+
+set_project(){
+  echo "What project would we be working on?"
+  projectList=$(gcloud projects list --format="value(NAME)")
+
+  projArray+=($projectList)
+
+  i=0
+  for project in $projectList
+  do
+      ((i++))
+      echo "$i: $project"
+  done
+
+  while [ -z "$PROJNUM" ]
+  do
+    read -p "Please select (1-$i): " PROJNUM
+    if [[ -n ${PROJNUM//[0-9]/} ]]; then
+      unset PROJNUM
+    fi
+  done
+  
+  PROJECT=${projArray[(($PROJNUM-1))]}
+  echo "You are to set $PROJECT as your default project, press <Enter> to continue"
+  read
+
+  gcloud config set project $PROJECT
+}
+
+zone_setup(){
+  ############################################################
+  ## DO NOT ASSUME THE ZONES AND REGIONS - GET IT FROM GCLOUD
+  ############################################################
+  local zone=$(gcloud config get-value compute/zone)
+  if [ -z "$zone" ]
+  then
+    echo "We cannot detect a Zone in your configuration"
+    echo "What Region do you want to set your resources to?"
+    echo "1. US-West"
+    echo "2. US-Central"
+    echo "3. US-East"
+
+    while [ -z "$zoneNum" ]
+    do
+      read -p "Please select (1, 2, or 3): " zoneNum
+      if [[ -n ${zoneNum//[0-9]/} ]]; then
+        unset zoneNum
+      fi
+    done
+
+    local letters=(a b c)
+    local a=$((RANDOM%3+1))
+    local b=$((RANDOM%3))
+
+
+    if [ "${zoneNum,,}" = "2" ]; then
+		  zoneValue="us-central${a}-${letters[$b]}"
+      regionValue="us-central${a}"
+    elif [ "${zoneNum,,}" = "3" ]; then
+		  zoneValue="us-east${a}-${letters[$b]}"
+      regionValue="us-east${a}"
+    else
+		  zoneValue="us-west${a}-${letters[$b]}"
+      regionValue="us-west${a}"
+    fi
+
+    echo "You are about to set your Zone to $zoneValue, press <Enter> to continue"
+    read
+
+    gcloud compute project-info add-metadata --metadata google-compute-default-region=$regionValue,google-compute-default-zone=$zoneValue
+    
+    # Initialize Gcloud
+    echo "We recommend that you setup a default zone as part of the setup below"
+    gcloud init
+  fi
+}

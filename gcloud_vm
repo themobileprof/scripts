@@ -1,0 +1,191 @@
+#!/bin/bash
+
+# Setup a VM on Google Cloud using our guided system
+
+
+# Constants ########
+readonly WAITLONG=3
+readonly WAITSMALL=1
+####################
+
+# Main function
+main(){
+     # Install Applications
+    echo ">>> This walk-through will help you easily setup a VM on Google Cloud"
+    echo ""
+    sleep $WAITLONG
+
+    echo "Requirements:"
+    echo "1) You must have installed the Google Cloud CLI on your device or have access to Google Cloud shell on your device"
+    echo "2) You must have authenticated your Google Cloud account and attached billing to your project. For more information, visit: https://cloud.google.com/billing/docs/how-to/create-billing-account#create-new-billing-account"
+
+
+    echo "Have you met the requirements above? Y/n"
+    read REQ
+    if [ "${REQ,,}" != "y" ]; then
+      echo "Aborting..."
+      exit 1
+    fi
+
+    # Check if there is a default zone, if not, Google init
+    zone=$(gcloud config get-value compute/zone)
+    if [ -z "$zone" ]
+    then
+      # Initialize Google Cloud
+      echo "We cannot detect a Zone in your configuration, so let us help you with configuration. Please remember to configure your zone as us-west, us-central, or us-east especially if you need the Google free VM"
+      read -p "Press <Enter> to proceed..."
+      gcloud init
+    fi
+
+    # Name your machine with a unique name
+    echo ""
+    echo "Firstly, type the unique name you would like to call this machine, do not add any spaces when typing the name:"
+    read VMNAME
+    VMNAME=${VMNAME// /}$RANDOM
+    
+    sleep $WAITLONG
+
+    # Choose machine
+    echo ""
+    echo "Secondly, what type of machine do you want?"
+    echo "1. The Free Instance VM"
+    echo "2. To setup a custom machine"
+    echo "Please indicate 1 or 2 below"
+    read TYPE
+
+    if [ "${TYPE,,}" = "1" ]; then
+      free_vm $VMNAME
+    else
+      vm $VMNAME $zone
+    fi
+}
+
+
+free_vm(){
+
+    # Get a US Zone except us-south
+    usZones=$(gcloud compute zones list --filter="us- AND -us-south" --format="value(NAME)")
+    zonesArray+=($usZones)
+    zoneElem=$((RANDOM%${#zonesArray[@]}))
+
+    echo ""
+    echo "Below is the code to create your free VM:"
+    echo "gcloud compute instances create $1 --image-family=debian-10 --image-project=debian-cloud --machine-type=e2-micro --zone=${zonesArray[$zoneElem]}"
+    ## Create a system for user to choose the debian version later
+    
+
+    while [ -z "$FREEINSTANCE" ]
+    do
+      echo "Would you like to run it? Y/N"
+      read FREEINSTANCE
+
+      if [ "${FREEINSTANCE,,}" = "y" ]; then
+        gcloud compute instances create $1 --image-family=debian-10 --image-project=debian-cloud --machine-type=e2-micro --zone=${zonesArray[$zoneElem]}
+        echo "Free VM Created!"
+      elif [ "${FREEINSTANCE,,}" = "n" ]; then
+        echo "Free VM Creation aborted!"
+      else
+        unset FREEINSTANCE
+      fi
+    done
+}
+
+vm(){ # Expecting VMNAME and zone
+    echo ""
+    echo "To create a custom VM, kindly answer these few questions:"
+
+    # Select Operating System
+    echo "# Which Operating System do you want to use?"
+    echo "1. Debian (default)"
+    echo "2. Ubuntu"
+    echo "3. Rocky Linux"
+    read -p "Select (1-3): " OS
+    if [ "${OS,,}" = "2" ]; then
+		  echo "You chose Ubuntu!"
+      OpSys="ubuntu"
+    elif [ "${OS,,}" = "3" ]; then
+      echo "You chose Rocky!"
+      OpSys="rocky"
+    else
+      echo "You chose Debian!"
+      OpSys="debian"
+    fi
+
+
+    # Select RAM
+    echo ""
+    echo "# How many GB RAM do you need for your Machine?"
+    echo "1GB"
+    echo "2GB"
+    echo "4GB"
+    echo "8GB"
+    echo "16GB"
+    echo "32GB"
+    echo "64GB"
+    echo "128GB"
+    while [ -z "$RAM" ]
+    do
+      read -p "Please input a number (GB): " RAM
+      if [[ -n ${RAM//[0-9]/} ]]; then
+        unset RAM
+      fi
+    done
+
+    # Get machines with selected RAM
+    ramMB=$(($RAM*1024))
+    machines=$(gcloud compute machine-types list --filter="zone:( $2 ) AND memoryMb:( $ramMB )" --format="value(NAME)")
+    machinesArray+=($machines)
+
+    echo ""
+    echo "Below are the machines that matches $RAM GB RAM. Note that the number at the end is the number of CPU."
+    i=0
+    for machine in $machines
+    do
+        ((i++))
+        echo "$i: $machine"
+    done
+
+    while [ -z "$machineNum" ]
+    do
+      read -p "Please select a machine number: " machineNum
+      if [[ -n ${machineNum//[0-9]/} ]]; then
+        unset machineNum
+      fi
+    done
+    machineNum=$(($machineNum-1))
+
+    echo ""
+    echo "The machine you just selected is:"
+    # gcloud compute machine-types list --filter="zone:( $2 ) AND name=${machinesArray[$machineNum]}"
+    gcloud compute machine-types describe ${machinesArray[$machineNum]} --zone=$2
+
+    # Select Disk Space
+    echo ""
+    echo "# How many GB hard drive do you need?"
+
+    while [ -z "$HDD" ]
+    do
+      read -p "Input a number (GB): " HDD
+      if [[ -n ${HDD//[0-9]/} ]]; then
+        unset HDD
+      fi
+    done
+
+    
+    IMGFAM=$(gcloud compute images list --format="value(FAMILY)" --filter="$OpSys" --limit=1)
+    IMGPRO=$(gcloud compute images list --format="value(PROJECT)" --filter="$OpSys" --limit=1)
+
+    echo ""
+    echo "We about to deploy your machine with the following command"
+    echo "gcloud compute instances create $1 --image-family=$IMGFAM --image-project=$IMGPRO --machine-type=${machinesArray[$machineNum]} --boot-disk-size=$HDD"
+    read -p "Please press <Enter> to continue"
+    gcloud compute instances create $1 --image-family=$IMGFAM --image-project=$IMGPRO --machine-type=${machinesArray[$machineNum]} --boot-disk-size=$HDD
+    
+}
+
+
+
+
+
+# Call Main function
+main
