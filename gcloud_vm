@@ -28,16 +28,16 @@ main(){
 
     # Check if there is a default zone, if not, Google init
     zone=$(gcloud config get-value compute/zone)
-    if [ -z "$zone" ]
-    then
+    while [ -z "$zone" ]
+    do
       # Initialize Google Cloud
       echo "We cannot detect a Zone in your configuration, so let us help you with configuration. Please remember to configure your zone as us-west, us-central, or us-east especially if you need the Google free VM"
       read -p "Press <Enter> to proceed..."
       gcloud init
-    fi
 
-    # Ensure User Sets Zone
-    zone_setup
+      zone=$(gcloud config get-value compute/zone)
+    done
+
 
     # Name your machine with a unique name
     echo ""
@@ -61,58 +61,6 @@ main(){
       vm $VMNAME $zone
     fi
 }
-
-zone_setup(){
-  ############################################################
-  ## DO NOT ASSUME THE ZONES AND REGIONS - GET IT FROM GCLOUD
-  ############################################################
-  local zone=$(gcloud config get-value compute/zone)
-  if [ -z "$zone" ]
-  then
-    echo "We cannot detect a Zone in your configuration"
-    echo "What Region do you want to set your resources to?"
-    echo "1. US-West"
-    echo "2. US-Central"
-    echo "3. US-East"
-
-    while [ -z "$zoneNum" ]
-    do
-      read -p "Please select (1, 2, or 3): " zoneNum
-      if [[ -n ${zoneNum//[0-9]/} ]]; then
-        unset zoneNum
-      fi
-    done
-
-    local letters=(a b c)
-    local a=$((RANDOM%3+1))
-    local b=$((RANDOM%3))
-
-
-    if [ "${zoneNum,,}" = "2" ]; then
-		  zoneValue="us-central${a}-${letters[$b]}"
-      regionValue="us-central${a}"
-    elif [ "${zoneNum,,}" = "3" ]; then
-		  zoneValue="us-east${a}-${letters[$b]}"
-      regionValue="us-east${a}"
-    else
-		  zoneValue="us-west${a}-${letters[$b]}"
-      regionValue="us-west${a}"
-    fi
-
-    echo "You are about to set your Zone to $zoneValue, press <Enter> to continue"
-    read
-
-    gcloud compute project-info add-metadata --metadata google-compute-default-region=$regionValue,google-compute-default-zone=$zoneValue
-    
-    
-  else # If there is a zone configuration, set it as a metadata
-    gcloud compute project-info add-metadata --metadata google-compute-default-zone=$zone
-  fi
-
-  # Initialize Gcloud
-  gcloud init
-}
-
 
 free_vm(){
 

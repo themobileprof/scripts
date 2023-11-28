@@ -69,8 +69,9 @@ zone_setup(){
 
     gcloud compute project-info add-metadata --metadata google-compute-default-region=$regionValue,google-compute-default-zone=$zoneValue
     
-    # Initialize Gcloud
-    echo "We recommend that you setup a default zone as part of the setup below"
-    gcloud init
+    
   fi
+
+  # Initialize Gcloud
+  gcloud init
 }
