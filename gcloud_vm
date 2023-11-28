@@ -37,6 +37,9 @@ main(){
     # fi
     # zone=$(gcloud config get-value compute/zone)
 
+    # Gcloud login
+    gcloud auth login --no-launch-browser
+
     # Setup project
     set_project
 
