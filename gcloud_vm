@@ -36,6 +36,7 @@ main(){
       read -p "Press <Enter> to proceed..."
       gcloud init
     fi
+    zone=$(gcloud config get-value compute/zone)
 
     # Name your machine with a unique name
     echo ""
@@ -54,7 +55,7 @@ main(){
     read TYPE
 
     if [ "${TYPE,,}" = "1" ]; then
-      free_vm $VMNAME
+      free_vm $VMNAME $zone
     else
       vm $VMNAME $zone
     fi
@@ -67,10 +68,27 @@ free_vm(){
     usZones=$(gcloud compute zones list --filter="us- AND -us-south" --format="value(NAME)")
     zonesArray+=($usZones)
     zoneElem=$((RANDOM%${#zonesArray[@]}))
+    ZONE=${zonesArray[$zoneElem]}
+
+    # Use the default zone is it is the right zone
+    for usZone in $usZones
+    do
+        if [ "$usZone" == "$2" ]
+        then
+          ZONE=$2
+          break
+        fi
+    done
+
+
+
+    echo ""
+    echo "The machine you just selected is:"
+    gcloud compute machine-types describe e2-micro --zone=$ZONE
 
     echo ""
     echo "Below is the code to create your free VM:"
-    echo "gcloud compute instances create $1 --image-family=debian-10 --image-project=debian-cloud --machine-type=e2-micro --zone=${zonesArray[$zoneElem]}"
+    echo "gcloud compute instances create $1 --image-family=debian-10 --image-project=debian-cloud --machine-type=e2-micro --zone=$ZONE"
     ## Create a system for user to choose the debian version later
     
 
@@ -80,7 +98,7 @@ free_vm(){
       read FREEINSTANCE
 
       if [ "${FREEINSTANCE,,}" = "y" ]; then
-        gcloud compute instances create $1 --image-family=debian-10 --image-project=debian-cloud --machine-type=e2-micro --zone=${zonesArray[$zoneElem]}
+        gcloud compute instances create $1 --image-family=debian-10 --image-project=debian-cloud --machine-type=e2-micro --zone=$ZONE
         echo "Free VM Created!"
       elif [ "${FREEINSTANCE,,}" = "n" ]; then
         echo "Free VM Creation aborted!"
@@ -88,6 +106,8 @@ free_vm(){
         unset FREEINSTANCE
       fi
     done
+
+
 }
 
 vm(){ # Expecting VMNAME and zone

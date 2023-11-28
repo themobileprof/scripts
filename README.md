@@ -47,18 +47,33 @@ curl -Lo setup https://raw.githubusercontent.com/themobileprof/scripts/develop/e
 curl -Lo setup https://raw.githubusercontent.com/themobileprof/scripts/develop/apps_setup && chmod +x ./setup && ./setup && exit
 ``` 
 
-## Cloud Setup Scripts
+## Cloud CLI Scripts
+
+### Google Cloud 
+
 1. [The GCP CLI setup script](../blob/develop/gcp_cli_setup): This script installs Google cloud CLI for managing Google Cloud resources. To use this script in Termux, copy and paste the below snippet of code into your terminal:
 ```
 curl -Lo setup https://raw.githubusercontent.com/themobileprof/scripts/develop/gcp_cli_setup && chmod +x ./setup && ./setup && exit
 ``` 
+
+1. [GCloud VM Setup](../blob/develop/gcloud_vm): This scripts helps you provision a free VM or customize a more robust machine for your use. It works well on Termux or on the Google cloud shell, just copy and paste the code below into your terminal:
+```
+curl -Lo vm https://raw.githubusercontent.com/themobileprof/scripts/develop/gcloud_vm && chmod +x ./vm && ./vm && exit
+``` 
+
+### AWS Cloud
+
 1. [The AWS CLI setup script](../blob/develop/aws_cli_setup): This script installs AWS CLI for managing Amazon Web Services. To use this script in Termux, copy and paste the below snippet of code into your terminal:
 ```
 curl -Lo setup https://raw.githubusercontent.com/themobileprof/scripts/develop/aws_cli_setup && chmod +x ./setup && ./setup && exit
 ``` 
+
+### Azure Cloud
+
 1. [The Azure CLI setup script](../blob/develop/azure_cli_setup): This script installs Azure CLI for managing Microsoft Azure Cloud resources. To use this script in Termux, copy and paste the below snippet of code into your terminal:
 ```
 curl -Lo setup https://raw.githubusercontent.com/themobileprof/scripts/develop/azure_cli_setup && chmod +x ./setup && ./setup && exit
 ``` 
+
 
 For any feedbacks or enqiries, please reach out here: themobileprof.com @ gmail.com
