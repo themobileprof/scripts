@@ -39,7 +39,7 @@ main(){
     while [ -z "$zone" ]
     do
       # Initialize Google Cloud
-      echo "We cannot detect a Zone in your configuration, so let us help you with configuration. Please remember to configure your zone as us-west, us-central, or us-east especially if you need the Google free VM"
+      echo "We cannot detect a Zone in your configuration, so let us help you with configuration. Please remember to configure your zone as us-west1, us-central1, or us-east1 especially if you need the Google free VM"
       read -p "Press <Enter> to proceed..."
       gcloud init
 
@@ -73,7 +73,7 @@ main(){
 free_vm(){
 
     # Get a US Zone except us-south
-    usZones=$(gcloud compute zones list --filter="us- AND -us-south" --format="value(NAME)")
+    usZones=$(gcloud compute zones list --filter="us-west1 AND us-east1 AND us-central1" --format="value(NAME)")
     zonesArray+=($usZones)
     zoneElem=$((RANDOM%${#zonesArray[@]}))
     ZONE=${zonesArray[$zoneElem]}
@@ -161,7 +161,7 @@ vm(){ # Expecting VMNAME and zone
 
     # Get machines with selected RAM
     ramMB=$(($RAM*1024))
-    machines=$(gcloud compute machine-types list --filter="zone:( $2 ) AND memoryMb:( $ramMB )" --format="value(NAME)")
+    machines=$(gcloud compute machine-types list --filter="zone:( $2 ) AND memoryMb:( $ramMB ) AND name ~ e2" --format="value(NAME)")
     machinesArray+=($machines)
 
     echo ""
