@@ -27,12 +27,12 @@ main(){
     fi
 
 
-			if [ -d $HOME/.config/gcloud ]; then
-    		CLOUDSDK_CONFIG=$HOME/.config/gcloud
-			else
-   			mkdir $HOME/.config/gcloud
-					CLOUDSDK_CONFIG=$HOME/.config/gcloud
-			fi
+    if [ -d $HOME/.config/gcloud ]; then
+        CLOUDSDK_CONFIG=$HOME/.config/gcloud
+    else
+        mkdir $HOME/.config/gcloud
+        CLOUDSDK_CONFIG=$HOME/.config/gcloud
+    fi
 
     # Check if there is a default zone, if not, Google init
     zone=$(gcloud config get-value compute/zone)
