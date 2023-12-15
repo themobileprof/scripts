@@ -106,7 +106,7 @@ free_vm(){
       read FREEINSTANCE
 
       if [ "${FREEINSTANCE,,}" = "y" ]; then
-        gcloud compute instances create $1 --image-family=debian-10 --image-project=debian-cloud --machine-type=e2-micro --zone=$ZONE
+        gcloud compute instances create $1 --image-family=debian-10 --image-project=debian-cloud --machine-type=e2-micro --provisioning-model=STANDARD --boot-disk-size= --zone=$ZONE
         echo "Free VM Created!"
       elif [ "${FREEINSTANCE,,}" = "n" ]; then
         echo "Free VM Creation aborted!"
